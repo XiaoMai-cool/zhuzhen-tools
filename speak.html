@@ -318,6 +318,11 @@ input[type="number"] { width: 5rem; }
     <select id="class-select"><option value="">请选择班级</option></select>
     <div class="info-row" id="class-info"></div>
     <div class="student-grid" id="student-grid"></div>
+    <div class="add-trial" style="margin-top:0.6rem; display:flex; gap:0.4rem; align-items:center;">
+      <input type="text" id="trial-input" placeholder="输入试课学员化名" style="flex:1; min-width:120px;">
+      <button class="btn btn-secondary" id="btn-add-trial" type="button">添加</button>
+    </div>
+    <div class="student-grid" id="trial-grid" style="margin-top:0.4rem;"></div>
   </div>
 
   <!-- Step 2: 配置题目 -->
@@ -372,6 +377,7 @@ input[type="number"] { width: 5rem; }
 // ── State ──────────────────────────────────────────────────────────────
 let DATA = null;             // loaded from students.json
 let classStudents = [];      // students in selected class (active only)
+let trialStudents = [];      // manually added trial students
 let excludedIds = new Set(); // manually excluded student IDs
 let assignments = null;      // current recommendation result
 let scoredStudents = [];     // scored & ranked students for swapping
@@ -459,7 +465,9 @@ $classSelect.addEventListener('change', () => {
     .sort((a, b) => a.mic_total - b.mic_total);  // sort by fewest mic first
 
   excludedIds.clear();
+  trialStudents = [];
   renderStudentGrid();
+  renderTrialGrid();
   $cardConfig.classList.remove('disabled');
   $cardResult.classList.add('disabled');
   $cardNotify.classList.add('disabled');
@@ -467,8 +475,8 @@ $classSelect.addEventListener('change', () => {
 });
 
 function renderStudentGrid() {
-  const activeCount = classStudents.filter(s => !excludedIds.has(s.id)).length;
-  $classInfo.innerHTML = `活跃学员 <strong>${activeCount}</strong> 人（点击可排除）`;
+  const activeCount = classStudents.filter(s => !excludedIds.has(s.id)).length + trialStudents.length;
+  $classInfo.innerHTML = `参与学员 <strong>${activeCount}</strong> 人（点击可排除）`;
 
   $studentGrid.innerHTML = classStudents.map(s => {
     const isExcluded = excludedIds.has(s.id);
@@ -482,6 +490,49 @@ function renderStudentGrid() {
       const id = el.dataset.id;
       if (excludedIds.has(id)) excludedIds.delete(id);
       else excludedIds.add(id);
+      renderStudentGrid();
+    });
+  });
+}
+
+// ── Trial students ─────────────────────────────────────────────────────
+const $trialInput = document.getElementById('trial-input');
+const $trialGrid = document.getElementById('trial-grid');
+
+document.getElementById('btn-add-trial').addEventListener('click', addTrial);
+$trialInput.addEventListener('keydown', e => { if (e.key === 'Enter') addTrial(); });
+
+function addTrial() {
+  const name = $trialInput.value.trim();
+  if (!name) return;
+  if (trialStudents.some(s => s.alias === name)) { $trialInput.value = ''; return; }
+  trialStudents.push({
+    id: 'trial_' + Date.now(),
+    alias: name,
+    stage: '试课',
+    exam_type: '',
+    region: '',
+    classes: [],
+    mic_total: 0,
+    mic_last_date: null,
+    mic_positions: {},
+  });
+  $trialInput.value = '';
+  renderTrialGrid();
+  renderStudentGrid();  // update count
+}
+
+function renderTrialGrid() {
+  $trialGrid.innerHTML = trialStudents.map(s =>
+    `<span class="student-chip" data-id="${s.id}" style="background:#fff3e0;">
+      ${s.alias} <span class="mic-count">试课</span> <span style="cursor:pointer;margin-left:2px;color:#999;">×</span>
+    </span>`
+  ).join('');
+
+  $trialGrid.querySelectorAll('.student-chip').forEach(el => {
+    el.addEventListener('click', () => {
+      trialStudents = trialStudents.filter(s => s.id !== el.dataset.id);
+      renderTrialGrid();
       renderStudentGrid();
     });
   });
@@ -578,7 +629,10 @@ document.getElementById('btn-generate').addEventListener('click', generate);
 document.getElementById('btn-regenerate').addEventListener('click', generate);
 
 function generate() {
-  const available = classStudents.filter(s => !excludedIds.has(s.id));
+  const available = [
+    ...classStudents.filter(s => !excludedIds.has(s.id)),
+    ...trialStudents,
+  ];
   if (available.length === 0) { alert('没有可用学员'); return; }
 
   scoredStudents = scoreStudents(available);
