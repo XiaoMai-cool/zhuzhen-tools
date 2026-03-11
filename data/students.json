@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-03-11T13:06:40.105362+08:00",
+  "exported_at": "2026-03-11T13:11:21.556910+08:00",
   "students": [
     {
       "id": "zc009",
@@ -8,9 +8,7 @@
       "exam_type": "国考",
       "region": "江苏",
       "classes": [
-        "国考训练营",
-        "面试长期班",
-        "省考训练营（免费）"
+        "面试长期班"
       ],
       "mic_total": 12,
       "mic_last_date": "2026-01-17",
@@ -26,9 +24,7 @@
       "stage": "已结课",
       "exam_type": "国考",
       "region": "四川",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 1,
       "mic_last_date": "2026-01-08",
       "mic_positions": {
@@ -41,9 +37,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "待确认",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -54,9 +48,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "湖北",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -67,9 +59,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "待确认",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -81,8 +71,6 @@
       "exam_type": "广东仕途",
       "region": "广东",
       "classes": [
-        "广东仕途班",
-        "政治理论课",
         "面试长期班"
       ],
       "mic_total": 22,
@@ -100,9 +88,7 @@
       "exam_type": "国考",
       "region": "北京",
       "classes": [
-        "国考训练营",
-        "面试长期班",
-        "省考训练营（免费）"
+        "面试长期班"
       ],
       "mic_total": 20,
       "mic_last_date": "2026-02-22",
@@ -118,9 +104,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "待确认",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -131,11 +115,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "福建",
-      "classes": [
-        "国考训练营",
-        "政治理论课",
-        "省考训练营（免费）"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -147,10 +127,7 @@
       "exam_type": "国考",
       "region": "广东",
       "classes": [
-        "广东仕途班",
-        "政治理论课",
-        "面试长期班",
-        "省考训练营（免费）"
+        "面试长期班"
       ],
       "mic_total": 18,
       "mic_last_date": "2026-02-25",
@@ -167,10 +144,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "北京",
-      "classes": [
-        "国考训练营",
-        "政治理论课"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -181,10 +155,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "广东",
-      "classes": [
-        "国考训练营",
-        "政治理论课"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -196,10 +167,7 @@
       "exam_type": "国考",
       "region": "四川",
       "classes": [
-        "国考训练营",
-        "政治理论课",
         "面试长期班",
-        "省考训练营（免费）",
         "面试长期（协议）",
         "面试长期（协议/已缴尾款）"
       ],
@@ -217,9 +185,7 @@
       "stage": "在读",
       "exam_type": "广东仕途",
       "region": "广东",
-      "classes": [
-        "广东仕途班"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -230,9 +196,7 @@
       "stage": "在读",
       "exam_type": "士兵单招",
       "region": "湖南",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -244,7 +208,6 @@
       "exam_type": "国考",
       "region": "福建",
       "classes": [
-        "国考训练营",
         "面试长期班"
       ],
       "mic_total": 12,
@@ -260,10 +223,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "山东",
-      "classes": [
-        "国考训练营",
-        "政治理论课"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -274,10 +234,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "山东",
-      "classes": [
-        "国考训练营",
-        "政治理论课"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -288,9 +245,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "待确认",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -301,9 +256,7 @@
       "stage": "在读",
       "exam_type": "国考",
       "region": "广东",
-      "classes": [
-        "省考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -314,9 +267,7 @@
       "stage": "在读",
       "exam_type": "广东仕途",
       "region": "广东",
-      "classes": [
-        "国考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -327,9 +278,7 @@
       "stage": "在读",
       "exam_type": "省考",
       "region": "湖南",
-      "classes": [
-        "省考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -341,8 +290,7 @@
       "exam_type": "省考",
       "region": "河北",
       "classes": [
-        "面试长期班",
-        "省考训练营"
+        "面试长期班"
       ],
       "mic_total": 0,
       "mic_last_date": null,
@@ -354,9 +302,7 @@
       "stage": "已结课",
       "exam_type": "面试",
       "region": "广东",
-      "classes": [
-        "省考训练营"
-      ],
+      "classes": [],
       "mic_total": 12,
       "mic_last_date": "2026-01-17",
       "mic_positions": {
@@ -389,9 +335,7 @@
       "stage": "在读",
       "exam_type": "省考",
       "region": "广东",
-      "classes": [
-        "省考训练营"
-      ],
+      "classes": [],
       "mic_total": 0,
       "mic_last_date": null,
       "mic_positions": {}
@@ -437,8 +381,7 @@
       "exam_type": "",
       "region": "",
       "classes": [
-        "面试长期班",
-        "省考训练营（免费）"
+        "面试长期班"
       ],
       "mic_total": 13,
       "mic_last_date": "2026-02-25",
@@ -488,8 +431,7 @@
       "exam_type": "",
       "region": "",
       "classes": [
-        "面试长期班",
-        "省考训练营（免费）"
+        "面试长期班"
       ],
       "mic_total": 0,
       "mic_last_date": null,
@@ -497,72 +439,6 @@
     }
   ],
   "classes": [
-    {
-      "name": "国考训练营",
-      "student_ids": [
-        "zc009",
-        "zc010",
-        "zc011",
-        "zc012",
-        "zc013",
-        "zc015",
-        "zc016",
-        "zc017",
-        "zc019",
-        "zc020",
-        "zc021",
-        "zc023",
-        "zc024",
-        "zc025",
-        "zc026",
-        "zc027",
-        "zc029"
-      ]
-    },
-    {
-      "name": "广东仕途班",
-      "student_ids": [
-        "zc014",
-        "zc018",
-        "zc022"
-      ]
-    },
-    {
-      "name": "政治理论课",
-      "student_ids": [
-        "zc014",
-        "zc017",
-        "zc018",
-        "zc019",
-        "zc020",
-        "zc021",
-        "zc025",
-        "zc026",
-        "{'table_id': 'tbli1lEIM8jZCMe6', 'text_arr': [], 'type': 'text'}"
-      ]
-    },
-    {
-      "name": "省考训练营",
-      "student_ids": [
-        "zc028",
-        "zc031",
-        "zc032",
-        "zc033",
-        "zc035"
-      ]
-    },
-    {
-      "name": "省考训练营（免费）",
-      "student_ids": [
-        "zc009",
-        "zc015",
-        "zc017",
-        "zc018",
-        "zc021",
-        "zc038",
-        "zc042"
-      ]
-    },
     {
       "name": "面试长期班",
       "student_ids": [
