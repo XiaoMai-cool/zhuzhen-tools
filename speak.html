@@ -292,6 +292,101 @@ input[type="number"] { width: 5rem; }
   color: var(--gray);
 }
 
+/* ── Guide button ── */
+.guide-btn {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: rgba(255,255,255,0.8);
+  background: none;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.guide-btn:hover { color: #fff; border-color: rgba(255,255,255,0.8); }
+
+/* ── Guide modal ── */
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.guide-overlay.show { display: flex; }
+.guide-modal {
+  background: #fff;
+  border-radius: 14px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+.guide-modal h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 1rem;
+}
+.guide-modal .guide-step {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+  align-items: flex-start;
+}
+.guide-modal .guide-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  background: var(--purple);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.guide-modal .guide-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #333;
+}
+.guide-modal .guide-text strong { color: var(--purple); }
+.guide-modal .guide-tip {
+  background: var(--light-purple);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #555;
+  margin-top: 0.6rem;
+}
+.guide-modal .guide-close {
+  display: block;
+  margin: 1rem auto 0;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  padding: 0.45rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.guide-modal .guide-close:hover { background: #4e0659; }
+
 /* ── Responsive ── */
 @media (max-width: 480px) {
   main { padding: 0.8rem 0.6rem 2rem; }
@@ -306,7 +401,23 @@ input[type="number"] { width: 5rem; }
   <a class="back" href="index.html">← 工具箱</a>
   <h1>推荐上麦工具</h1>
   <p>自动排序推荐上麦名单，一键生成群通知</p>
+  <button class="guide-btn" id="btn-guide" title="使用说明">?</button>
 </header>
+
+<!-- 操作指引弹窗 -->
+<div class="guide-overlay" id="guide-overlay">
+  <div class="guide-modal">
+    <h3>操作指引</h3>
+    <div class="guide-step"><span class="guide-num">1</span><div class="guide-text">选择<strong>班级</strong>，系统自动加载该班学员列表。灰色学员表示非在读状态，已自动排除。</div></div>
+    <div class="guide-step"><span class="guide-num">2</span><div class="guide-text">如有<strong>试课学员</strong>参加，在输入框输入化名后点击"添加"。试课学员只安排 1 次上麦，且不会排在第一顺位。</div></div>
+    <div class="guide-step"><span class="guide-num">3</span><div class="guide-text">设置<strong>题数</strong>和每题的<strong>顺位数</strong>（默认：第 1 题 3 个顺位，第 2、3 题各 2 个顺位）。</div></div>
+    <div class="guide-step"><span class="guide-num">4</span><div class="guide-text">点击<strong>生成推荐</strong>，系统根据上麦次数、间隔天数、第一顺位比例自动排序。对结果不满意可点击"重新生成"。</div></div>
+    <div class="guide-step"><span class="guide-num">5</span><div class="guide-text">点击推荐名单中的<strong>学员姓名</strong>可手动换人。</div></div>
+    <div class="guide-step"><span class="guide-num">6</span><div class="guide-text">填写<strong>腾讯会议号</strong>、选择<strong>题目类型</strong>，点击"生成通知"后<strong>一键复制</strong>发到群里。</div></div>
+    <div class="guide-tip"><strong>提示：</strong>点击学员头像可临时排除该学员（如请假），再次点击可恢复。数据由小麦定期更新，如发现学员信息有误请联系小麦。</div>
+    <button class="guide-close" id="btn-guide-close">知道了</button>
+  </div>
+</div>
 
 <main>
   <div class="data-bar" id="data-bar">正在加载学员数据…</div>
@@ -399,6 +510,12 @@ const $qType = document.getElementById('q-type');
 const $notifyText = document.getElementById('notify-text');
 const $btnCopy = document.getElementById('btn-copy');
 const $toast = document.getElementById('toast');
+
+// ── Guide modal ──────────────────────────────────────────────────────
+const $guideOverlay = document.getElementById('guide-overlay');
+document.getElementById('btn-guide').addEventListener('click', () => $guideOverlay.classList.add('show'));
+document.getElementById('btn-guide-close').addEventListener('click', () => $guideOverlay.classList.remove('show'));
+$guideOverlay.addEventListener('click', (e) => { if (e.target === $guideOverlay) $guideOverlay.classList.remove('show'); });
 
 // ── Load data ──────────────────────────────────────────────────────────
 async function loadData() {
