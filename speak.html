@@ -581,9 +581,10 @@ function scoreStudents(students) {
     const firstRatio = pos1 / totalPositioned;
     const days = daysSince(s.mic_last_date);
 
-    const score = W1 * (maxTotal - s.mic_total) / maxTotal
-                + W2 * days / maxDays
-                + W3 * (1 - firstRatio);
+    const base = W1 * (maxTotal - s.mic_total) / maxTotal
+               + W2 * days / maxDays
+               + W3 * (1 - firstRatio);
+    const score = base + (Math.random() - 0.5) * 0.08; // slight jitter for re-roll
 
     return { ...s, score, daysSinceLastMic: days, firstRatio };
   }).sort((a, b) => b.score - a.score);
@@ -610,7 +611,9 @@ function assignPositions(ranked, config) {
       if (round >= config[qi].positions) continue;  // this Q has fewer slots
 
       for (const s of candidates) {
-        if ((usage[s.id] || 0) >= 2) continue;          // max 2 per day
+        const isTrial = s.id.startsWith('trial_');
+        if (isTrial && round === 0) continue;            // trial: skip 1st position
+        if ((usage[s.id] || 0) >= (isTrial ? 1 : 2)) continue; // trial: max 1
         if (result[qi].ids.includes(s.id)) continue;     // already in this Q
 
         result[qi].names.push(s.alias);

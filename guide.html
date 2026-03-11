@@ -38,8 +38,20 @@ body {
   padding: 0 16px 80px;
 }
 
+/* ── Back link ── */
+.back {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.back:hover { color: #fff; }
+
 /* ── Header ── */
 .header {
+  position: relative;
   background: linear-gradient(135deg, #1a1a1a 0%, #660874 100%);
   color: #fff;
   padding: 24px 16px 20px;
@@ -522,6 +534,7 @@ body {
 
 <!-- Header -->
 <div class="header" id="header">
+  <a class="back" href="index.html">← 工具箱</a>
   <h1 id="pageTitle">助教 · 每日引导</h1>
   <div class="date" id="dateDisplay"></div>
   <div class="course-switcher" id="courseSwitcher"></div>
