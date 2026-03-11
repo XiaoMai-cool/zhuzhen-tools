@@ -294,23 +294,16 @@ input[type="number"] { width: 5rem; }
 
 /* ── Guide button ── */
 .guide-btn {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  color: rgba(255,255,255,0.8);
-  background: none;
-  border: 1.5px solid rgba(255,255,255,0.4);
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin-top: 0.5rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.guide-btn:hover { color: #fff; border-color: rgba(255,255,255,0.8); }
+.guide-btn:hover { color: #fff; background: rgba(255,255,255,0.22); }
 
 /* ── Guide modal ── */
 .guide-overlay {
@@ -401,7 +394,7 @@ input[type="number"] { width: 5rem; }
   <a class="back" href="index.html">← 工具箱</a>
   <h1>推荐上麦工具</h1>
   <p>自动排序推荐上麦名单，一键生成群通知</p>
-  <button class="guide-btn" id="btn-guide" title="使用说明">?</button>
+  <button class="guide-btn" id="btn-guide">📖 使用指南</button>
 </header>
 
 <!-- 操作指引弹窗 -->
