@@ -1,0 +1,613 @@
+{
+  "exported_at": "2026-03-11T11:32:11.497063+08:00",
+  "students": [
+    {
+      "id": "zc009",
+      "alias": "闫成",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "江苏",
+      "classes": [
+        "国考训练营5600",
+        "面试长期班3600",
+        "省考训练营（免费）"
+      ],
+      "mic_total": 12,
+      "mic_last_date": "2026-01-17",
+      "mic_positions": {
+        "3": 4,
+        "2": 2,
+        "1": 1
+      }
+    },
+    {
+      "id": "zc010",
+      "alias": "王涛语",
+      "stage": "已结课",
+      "exam_type": "国考",
+      "region": "四川",
+      "classes": [
+        "国考训练营5600"
+      ],
+      "mic_total": 1,
+      "mic_last_date": "2026-01-08",
+      "mic_positions": {
+        "1": 1
+      }
+    },
+    {
+      "id": "zc011",
+      "alias": "小F",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "待确认",
+      "classes": [
+        "国考训练营5600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc012",
+      "alias": "白棠",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "湖北",
+      "classes": [
+        "国考训练营5600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc013",
+      "alias": "夏小正",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "待确认",
+      "classes": [
+        "国考训练营5600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc014",
+      "alias": "马杰",
+      "stage": "在读",
+      "exam_type": "广东仕途",
+      "region": "广东",
+      "classes": [
+        "广东仕途班9800",
+        "政治理论课1800",
+        "面试长期班7200"
+      ],
+      "mic_total": 22,
+      "mic_last_date": "2026-02-25",
+      "mic_positions": {
+        "1": 10,
+        "3": 4,
+        "2": 5
+      }
+    },
+    {
+      "id": "zc015",
+      "alias": "云起",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "北京",
+      "classes": [
+        "国考训练营5600",
+        "面试长期班3600",
+        "省考训练营（免费）"
+      ],
+      "mic_total": 20,
+      "mic_last_date": "2026-02-22",
+      "mic_positions": {
+        "1": 5,
+        "2": 9,
+        "3": 1
+      }
+    },
+    {
+      "id": "zc016",
+      "alias": "陈涛",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "待确认",
+      "classes": [
+        "国考训练营5600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc017",
+      "alias": "阿扬",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "福建",
+      "classes": [
+        "国考训练营5600",
+        "政治理论课1800",
+        "省考训练营（免费）"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc018",
+      "alias": "乔",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "广东",
+      "classes": [
+        "广东仕途班9800",
+        "政治理论课1800",
+        "面试长期班7200",
+        "省考训练营（免费）"
+      ],
+      "mic_total": 18,
+      "mic_last_date": "2026-02-25",
+      "mic_positions": {
+        "2": 8,
+        "4": 1,
+        "1": 7,
+        "3": 2
+      }
+    },
+    {
+      "id": "zc019",
+      "alias": "王柯清",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "北京",
+      "classes": [
+        "国考训练营6800",
+        "政治理论课600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc020",
+      "alias": "啊璠",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "广东",
+      "classes": [
+        "国考训练营6800",
+        "政治理论课600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc021",
+      "alias": "朝朝",
+      "stage": "上岸",
+      "exam_type": "国考",
+      "region": "四川",
+      "classes": [
+        "国考训练营6800",
+        "政治理论课1800",
+        "面试长期班3600",
+        "省考训练营（免费）",
+        "面试长期（协议）",
+        "面试长期（协议/已缴尾款）"
+      ],
+      "mic_total": 13,
+      "mic_last_date": "2026-01-30",
+      "mic_positions": {
+        "2": 4,
+        "1": 5,
+        "3": 2
+      }
+    },
+    {
+      "id": "zc022",
+      "alias": "小陈",
+      "stage": "在读",
+      "exam_type": "广东仕途",
+      "region": "广东",
+      "classes": [
+        "广东仕途班9800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc023",
+      "alias": "小杨",
+      "stage": "在读",
+      "exam_type": "士兵单招",
+      "region": "湖南",
+      "classes": [
+        "国考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc024",
+      "alias": "云乐",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "福建",
+      "classes": [
+        "国考训练营5600",
+        "面试长期班7200"
+      ],
+      "mic_total": 12,
+      "mic_last_date": "2026-02-27",
+      "mic_positions": {
+        "1": 5,
+        "2": 7
+      }
+    },
+    {
+      "id": "zc025",
+      "alias": "振海",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "山东",
+      "classes": [
+        "国考训练营5600",
+        "政治理论课1800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc026",
+      "alias": "京智",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "山东",
+      "classes": [
+        "国考训练营6800",
+        "政治理论课600"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc027",
+      "alias": "刘小田",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "待确认",
+      "classes": [
+        "国考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc028",
+      "alias": "李彤",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "广东",
+      "classes": [
+        "省考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc029",
+      "alias": "blahbird",
+      "stage": "在读",
+      "exam_type": "广东仕途",
+      "region": "广东",
+      "classes": [
+        "国考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc031",
+      "alias": "小文",
+      "stage": "在读",
+      "exam_type": "省考",
+      "region": "湖南",
+      "classes": [
+        "省考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc032",
+      "alias": "西西",
+      "stage": "在读",
+      "exam_type": "省考",
+      "region": "河北",
+      "classes": [
+        "面试长期班7200",
+        "省考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc033",
+      "alias": "氢原子",
+      "stage": "已结课",
+      "exam_type": "面试",
+      "region": "广东",
+      "classes": [
+        "省考训练营6800"
+      ],
+      "mic_total": 12,
+      "mic_last_date": "2026-01-17",
+      "mic_positions": {
+        "1": 5,
+        "4": 1,
+        "2": 1
+      }
+    },
+    {
+      "id": "zc034",
+      "alias": "庚桑楚",
+      "stage": "在读",
+      "exam_type": "国考",
+      "region": "浙江",
+      "classes": [
+        "面试长期班7200"
+      ],
+      "mic_total": 19,
+      "mic_last_date": "2026-02-25",
+      "mic_positions": {
+        "1": 8,
+        "3": 2,
+        "2": 8,
+        "4": 1
+      }
+    },
+    {
+      "id": "zc035",
+      "alias": "万峰成",
+      "stage": "在读",
+      "exam_type": "省考",
+      "region": "广东",
+      "classes": [
+        "省考训练营6800"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    },
+    {
+      "id": "zc036",
+      "alias": "格林",
+      "stage": "在读",
+      "exam_type": "",
+      "region": "",
+      "classes": [
+        "面试长期班7200"
+      ],
+      "mic_total": 18,
+      "mic_last_date": "2026-02-27",
+      "mic_positions": {
+        "1": 8,
+        "2": 5,
+        "3": 5
+      }
+    },
+    {
+      "id": "zc037",
+      "alias": "刘生",
+      "stage": "在读",
+      "exam_type": "",
+      "region": "",
+      "classes": [
+        "面试长期（协议）"
+      ],
+      "mic_total": 18,
+      "mic_last_date": "2026-02-27",
+      "mic_positions": {
+        "1": 11,
+        "3": 2,
+        "2": 5
+      }
+    },
+    {
+      "id": "zc038",
+      "alias": "星河",
+      "stage": "在读",
+      "exam_type": "",
+      "region": "",
+      "classes": [
+        "面试长期班7200",
+        "省考训练营（免费）"
+      ],
+      "mic_total": 13,
+      "mic_last_date": "2026-02-25",
+      "mic_positions": {
+        "1": 6,
+        "3": 2,
+        "2": 5
+      }
+    },
+    {
+      "id": "zc040",
+      "alias": "娇娇",
+      "stage": "在读",
+      "exam_type": "",
+      "region": "",
+      "classes": [
+        "面试长期班7200"
+      ],
+      "mic_total": 12,
+      "mic_last_date": "2026-02-22",
+      "mic_positions": {
+        "2": 7,
+        "1": 5
+      }
+    },
+    {
+      "id": "zc041",
+      "alias": "小马过河",
+      "stage": "在读",
+      "exam_type": "",
+      "region": "",
+      "classes": [
+        "面试长期班7200"
+      ],
+      "mic_total": 8,
+      "mic_last_date": "2026-02-27",
+      "mic_positions": {
+        "1": 4,
+        "2": 3,
+        "3": 1
+      }
+    },
+    {
+      "id": "zc042",
+      "alias": "诗莹",
+      "stage": "咨询中",
+      "exam_type": "",
+      "region": "",
+      "classes": [
+        "面试长期班7200",
+        "省考训练营（免费）"
+      ],
+      "mic_total": 0,
+      "mic_last_date": null,
+      "mic_positions": {}
+    }
+  ],
+  "classes": [
+    {
+      "name": "国考训练营5600",
+      "student_ids": [
+        "zc009",
+        "zc010",
+        "zc011",
+        "zc012",
+        "zc013",
+        "zc015",
+        "zc016",
+        "zc017",
+        "zc024",
+        "zc025"
+      ]
+    },
+    {
+      "name": "国考训练营6800",
+      "student_ids": [
+        "zc019",
+        "zc020",
+        "zc021",
+        "zc023",
+        "zc026",
+        "zc027",
+        "zc029"
+      ]
+    },
+    {
+      "name": "广东仕途班9800",
+      "student_ids": [
+        "zc014",
+        "zc018",
+        "zc022"
+      ]
+    },
+    {
+      "name": "政治理论课1800",
+      "student_ids": [
+        "zc014",
+        "zc017",
+        "zc018",
+        "zc021",
+        "zc025",
+        "{'table_id': 'tbli1lEIM8jZCMe6', 'text_arr': [], 'type': 'text'}"
+      ]
+    },
+    {
+      "name": "政治理论课600",
+      "student_ids": [
+        "zc019",
+        "zc020",
+        "zc026"
+      ]
+    },
+    {
+      "name": "面试长期班3600",
+      "student_ids": [
+        "zc009",
+        "zc015",
+        "zc021"
+      ]
+    },
+    {
+      "name": "面试长期班7200",
+      "student_ids": [
+        "zc014",
+        "zc018",
+        "zc024",
+        "zc032",
+        "zc034",
+        "zc036",
+        "zc038",
+        "zc040",
+        "zc041",
+        "zc042"
+      ]
+    },
+    {
+      "name": "省考训练营6800",
+      "student_ids": [
+        "zc028",
+        "zc031",
+        "zc032",
+        "zc033",
+        "zc035"
+      ]
+    },
+    {
+      "name": "省考训练营（免费）",
+      "student_ids": [
+        "zc009",
+        "zc015",
+        "zc017",
+        "zc018",
+        "zc021",
+        "zc038",
+        "zc042"
+      ]
+    },
+    {
+      "name": "面试长期（协议）",
+      "student_ids": [
+        "zc021",
+        "zc037"
+      ]
+    },
+    {
+      "name": "面试长期（协议/已缴尾款）",
+      "student_ids": [
+        "zc021"
+      ]
+    }
+  ]
+}

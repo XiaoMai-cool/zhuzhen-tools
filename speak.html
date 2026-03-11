@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>推荐上麦 · 筑真学塾</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --purple: #660874;
+  --dark-purple: #1a1a1a;
+  --light-purple: #F0E4F3;
+  --bg: #FAFAF8;
+  --yellow: #F2CC84;
+  --green: #2e7d32;
+  --red: #c62828;
+  --gray: #999;
+}
+body {
+  font-family: "SF Pro Display", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--dark-purple);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header {
+  width: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #660874 100%);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+  position: relative;
+}
+header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em; }
+header p { font-size: 0.85rem; opacity: 0.8; margin-top: 0.3rem; }
+.back {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.back:hover { color: #fff; }
+
+main {
+  max-width: 640px;
+  width: 100%;
+  padding: 1.2rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  border-left: 4px solid var(--purple);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.card h2 .step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.card.disabled { opacity: 0.45; pointer-events: none; border-left-color: #ccc; }
+
+/* ── Data status bar ── */
+.data-bar {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
+  color: var(--gray);
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.data-bar .fresh { color: var(--green); }
+.data-bar .stale { color: #e65100; }
+.data-bar .error { color: var(--red); }
+
+/* ── Form elements ── */
+label { font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 0.3rem; }
+select, input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--dark-purple);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+select:focus, input:focus { border-color: var(--purple); }
+input[type="number"] { width: 5rem; }
+
+/* ── Student grid ── */
+.student-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+.student-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  background: var(--light-purple);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.student-chip:hover { background: #e0cde8; }
+.student-chip.excluded {
+  background: #f0f0f0;
+  color: #aaa;
+  text-decoration: line-through;
+}
+.student-chip .mic-count {
+  font-size: 0.7rem;
+  color: var(--gray);
+}
+
+/* ── Question config ── */
+.q-config {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  align-items: center;
+}
+.q-config .q-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+.q-config .q-item input { width: 3.5rem; text-align: center; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.55rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--purple);
+  color: #fff;
+}
+.btn-primary:hover { background: #4e0659; }
+.btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+.btn-secondary {
+  background: var(--light-purple);
+  color: var(--dark-purple);
+}
+.btn-secondary:hover { background: #e0cde8; }
+.btn-copy {
+  background: var(--green);
+  color: #fff;
+}
+.btn-copy:hover { background: #1b5e20; }
+.btn-row { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+
+/* ── Result ── */
+.result-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.result-item:last-child { border-bottom: none; }
+.result-item .q-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  color: var(--purple);
+}
+.result-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.result-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  background: var(--light-purple);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+}
+.result-name:hover { background: #e0cde8; }
+.result-name .pos-label {
+  font-size: 0.65rem;
+  color: var(--gray);
+}
+
+/* ── Swap dropdown ── */
+.swap-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  max-height: 200px;
+  overflow-y: auto;
+  min-width: 120px;
+  margin-top: 4px;
+}
+.swap-option {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.swap-option:hover { background: var(--light-purple); }
+.swap-option .swap-stat { color: var(--gray); font-size: 0.7rem; }
+
+/* ── Notification preview ── */
+.notify-preview {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-top: 0.6rem;
+}
+.copied-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-purple);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 200;
+}
+.copied-toast.show { opacity: 1; }
+
+/* ── Info row ── */
+.info-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  main { padding: 0.8rem 0.6rem 2rem; }
+  .card { padding: 1rem; }
+  header { padding: 1.5rem 0.8rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">← 工具箱</a>
+  <h1>推荐上麦工具</h1>
+  <p>自动排序推荐上麦名单，一键生成群通知</p>
+</header>
+
+<main>
+  <div class="data-bar" id="data-bar">正在加载学员数据…</div>
+
+  <!-- Step 1: 选择班级 -->
+  <div class="card disabled" id="card-class">
+    <h2><span class="step-num">1</span>选择班级与学员</h2>
+    <label for="class-select">班级</label>
+    <select id="class-select"><option value="">请选择班级</option></select>
+    <div class="info-row" id="class-info"></div>
+    <div class="student-grid" id="student-grid"></div>
+  </div>
+
+  <!-- Step 2: 配置题目 -->
+  <div class="card disabled" id="card-config">
+    <h2><span class="step-num">2</span>题目配置</h2>
+    <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+      <label for="q-count" style="margin:0">题数</label>
+      <input type="number" id="q-count" value="3" min="1" max="10" style="width:4rem">
+    </div>
+    <div class="q-config" id="q-positions"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-generate">生成推荐</button>
+    </div>
+  </div>
+
+  <!-- Step 3: 推荐结果 -->
+  <div class="card disabled" id="card-result">
+    <h2><span class="step-num">3</span>推荐名单</h2>
+    <div id="result-list"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btn-regenerate">重新生成</button>
+    </div>
+  </div>
+
+  <!-- Step 4: 生成通知 -->
+  <div class="card disabled" id="card-notify">
+    <h2><span class="step-num">4</span>生成通知</h2>
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:end;">
+      <div style="flex:1; min-width:160px;">
+        <label for="meeting-id">腾讯会议号</label>
+        <input type="text" id="meeting-id" placeholder="如 786579888">
+      </div>
+      <div style="min-width:130px;">
+        <label for="q-type">题目类型</label>
+        <select id="q-type">
+          <option value="材料结构化">材料结构化</option>
+          <option value="结构化">结构化</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-notify">生成通知</button>
+      <button class="btn btn-copy" id="btn-copy" style="display:none">一键复制</button>
+    </div>
+    <div class="notify-preview" id="notify-text" style="display:none"></div>
+  </div>
+</main>
+
+<div class="copied-toast" id="toast">已复制到剪贴板</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────
+let DATA = null;             // loaded from students.json
+let classStudents = [];      // students in selected class (active only)
+let excludedIds = new Set(); // manually excluded student IDs
+let assignments = null;      // current recommendation result
+let scoredStudents = [];     // scored & ranked students for swapping
+
+// ── DOM refs ───────────────────────────────────────────────────────────
+const $dataBar = document.getElementById('data-bar');
+const $cardClass = document.getElementById('card-class');
+const $cardConfig = document.getElementById('card-config');
+const $cardResult = document.getElementById('card-result');
+const $cardNotify = document.getElementById('card-notify');
+const $classSelect = document.getElementById('class-select');
+const $classInfo = document.getElementById('class-info');
+const $studentGrid = document.getElementById('student-grid');
+const $qCount = document.getElementById('q-count');
+const $qPositions = document.getElementById('q-positions');
+const $resultList = document.getElementById('result-list');
+const $meetingId = document.getElementById('meeting-id');
+const $qType = document.getElementById('q-type');
+const $notifyText = document.getElementById('notify-text');
+const $btnCopy = document.getElementById('btn-copy');
+const $toast = document.getElementById('toast');
+
+// ── Load data ──────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const resp = await fetch('data/students.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    DATA = await resp.json();
+    showDataStatus();
+    populateClasses();
+    $cardClass.classList.remove('disabled');
+  } catch (e) {
+    $dataBar.innerHTML = '<span class="error">加载数据失败，请确认 data/students.json 已部署</span>';
+  }
+}
+
+function showDataStatus() {
+  const d = new Date(DATA.exported_at);
+  const now = new Date();
+  const hoursAgo = Math.floor((now - d) / 3600000);
+  const daysAgo = Math.floor(hoursAgo / 24);
+  let timeText, cls;
+  if (daysAgo > 3) {
+    timeText = `${daysAgo} 天前更新`;
+    cls = 'stale';
+  } else if (hoursAgo > 0) {
+    timeText = hoursAgo < 24 ? `${hoursAgo} 小时前更新` : `${daysAgo} 天前更新`;
+    cls = 'fresh';
+  } else {
+    timeText = '刚刚更新';
+    cls = 'fresh';
+  }
+  $dataBar.innerHTML = `数据 <span class="${cls}">${timeText}</span>（${d.toLocaleDateString('zh-CN')} ${d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'})}）· ${DATA.students.length} 名学员 · ${DATA.classes.length} 个班级`;
+}
+
+function populateClasses() {
+  DATA.classes.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.name;
+    opt.textContent = `${c.name}（${c.student_ids.length} 人）`;
+    $classSelect.appendChild(opt);
+  });
+}
+
+// ── Class selection ────────────────────────────────────────────────────
+$classSelect.addEventListener('change', () => {
+  const className = $classSelect.value;
+  if (!className) {
+    classStudents = [];
+    $studentGrid.innerHTML = '';
+    $classInfo.innerHTML = '';
+    $cardConfig.classList.add('disabled');
+    $cardResult.classList.add('disabled');
+    $cardNotify.classList.add('disabled');
+    return;
+  }
+
+  const cls = DATA.classes.find(c => c.name === className);
+  if (!cls) return;
+
+  // Filter: students in this class who are active
+  const ACTIVE_STAGES = ['在读', '咨询中'];
+  classStudents = DATA.students
+    .filter(s => cls.student_ids.includes(s.id) && ACTIVE_STAGES.includes(s.stage))
+    .sort((a, b) => a.mic_total - b.mic_total);  // sort by fewest mic first
+
+  excludedIds.clear();
+  renderStudentGrid();
+  $cardConfig.classList.remove('disabled');
+  $cardResult.classList.add('disabled');
+  $cardNotify.classList.add('disabled');
+  updateQuestionPositions();
+});
+
+function renderStudentGrid() {
+  const activeCount = classStudents.filter(s => !excludedIds.has(s.id)).length;
+  $classInfo.innerHTML = `活跃学员 <strong>${activeCount}</strong> 人（点击可排除）`;
+
+  $studentGrid.innerHTML = classStudents.map(s => {
+    const isExcluded = excludedIds.has(s.id);
+    return `<span class="student-chip ${isExcluded ? 'excluded' : ''}" data-id="${s.id}">
+      ${s.alias} <span class="mic-count">${s.mic_total}次</span>
+    </span>`;
+  }).join('');
+
+  $studentGrid.querySelectorAll('.student-chip').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.id;
+      if (excludedIds.has(id)) excludedIds.delete(id);
+      else excludedIds.add(id);
+      renderStudentGrid();
+    });
+  });
+}
+
+// ── Question config ────────────────────────────────────────────────────
+$qCount.addEventListener('input', updateQuestionPositions);
+
+function updateQuestionPositions() {
+  const n = parseInt($qCount.value) || 3;
+  let html = '';
+  for (let i = 1; i <= n; i++) {
+    const defaultPos = i === 1 ? 3 : 2;
+    html += `<div class="q-item">第${i}题 <input type="number" class="pos-input" data-q="${i}" value="${defaultPos}" min="1" max="5"> 个位</div>`;
+  }
+  $qPositions.innerHTML = html;
+}
+
+function getQuestionConfig() {
+  const inputs = $qPositions.querySelectorAll('.pos-input');
+  return Array.from(inputs).map(el => ({
+    q: parseInt(el.dataset.q),
+    positions: parseInt(el.value) || 2,
+  }));
+}
+
+// ── Scoring algorithm ──────────────────────────────────────────────────
+function scoreStudents(students) {
+  if (students.length === 0) return [];
+
+  const maxTotal = Math.max(...students.map(s => s.mic_total), 1);
+  const today = new Date();
+
+  function daysSince(dateStr) {
+    if (!dateStr) return 365;
+    return Math.max(0, Math.floor((today - new Date(dateStr)) / 86400000));
+  }
+
+  const maxDays = Math.max(...students.map(s => daysSince(s.mic_last_date)), 1);
+
+  const W1 = 0.40, W2 = 0.35, W3 = 0.25;
+
+  return students.map(s => {
+    const pos1 = (s.mic_positions['1'] || 0);
+    const totalPositioned = Object.values(s.mic_positions).reduce((a, b) => a + b, 0) || 1;
+    const firstRatio = pos1 / totalPositioned;
+    const days = daysSince(s.mic_last_date);
+
+    const score = W1 * (maxTotal - s.mic_total) / maxTotal
+                + W2 * days / maxDays
+                + W3 * (1 - firstRatio);
+
+    return { ...s, score, daysSinceLastMic: days, firstRatio };
+  }).sort((a, b) => b.score - a.score);
+}
+
+// ── Position assignment ────────────────────────────────────────────────
+function assignPositions(ranked, config) {
+  const maxRound = Math.max(...config.map(c => c.positions));
+  const result = config.map(c => ({ q: c.q, names: [], ids: [] }));
+  const usage = {};  // id → count
+
+  for (let round = 0; round < maxRound; round++) {
+    // For round 0 (first positions), boost students with low firstRatio
+    let candidates = [...ranked];
+    if (round === 0) {
+      candidates.sort((a, b) => {
+        const aBoost = a.score + 0.3 * (1 - a.firstRatio);
+        const bBoost = b.score + 0.3 * (1 - b.firstRatio);
+        return bBoost - aBoost;
+      });
+    }
+
+    for (let qi = 0; qi < config.length; qi++) {
+      if (round >= config[qi].positions) continue;  // this Q has fewer slots
+
+      for (const s of candidates) {
+        if ((usage[s.id] || 0) >= 2) continue;          // max 2 per day
+        if (result[qi].ids.includes(s.id)) continue;     // already in this Q
+
+        result[qi].names.push(s.alias);
+        result[qi].ids.push(s.id);
+        usage[s.id] = (usage[s.id] || 0) + 1;
+        break;
+      }
+    }
+  }
+
+  return result;
+}
+
+// ── Generate recommendation ────────────────────────────────────────────
+document.getElementById('btn-generate').addEventListener('click', generate);
+document.getElementById('btn-regenerate').addEventListener('click', generate);
+
+function generate() {
+  const available = classStudents.filter(s => !excludedIds.has(s.id));
+  if (available.length === 0) { alert('没有可用学员'); return; }
+
+  scoredStudents = scoreStudents(available);
+  const config = getQuestionConfig();
+  assignments = assignPositions(scoredStudents, config);
+
+  renderResult();
+  $cardResult.classList.remove('disabled');
+  $cardNotify.classList.remove('disabled');
+
+  // Reset notification area
+  $notifyText.style.display = 'none';
+  $btnCopy.style.display = 'none';
+}
+
+function renderResult() {
+  $resultList.innerHTML = assignments.map((a, qi) =>
+    `<div class="result-item">
+      <div class="q-label">第${a.q}题</div>
+      <div class="result-names">${a.names.map((name, pi) =>
+        `<span class="result-name" data-qi="${qi}" data-pi="${pi}">
+          <span class="pos-label">${pi + 1}.</span> ${name}
+        </span>`
+      ).join('')}</div>
+    </div>`
+  ).join('');
+
+  // Click-to-swap
+  $resultList.querySelectorAll('.result-name').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllDropdowns();
+      showSwapDropdown(el, parseInt(el.dataset.qi), parseInt(el.dataset.pi));
+    });
+  });
+}
+
+// ── Swap logic ─────────────────────────────────────────────────────────
+function closeAllDropdowns() {
+  document.querySelectorAll('.swap-dropdown').forEach(d => d.remove());
+}
+document.addEventListener('click', closeAllDropdowns);
+
+function showSwapDropdown(anchor, qi, pi) {
+  const currentId = assignments[qi].ids[pi];
+  // All assigned IDs (except the one being swapped)
+  const allAssignedIds = new Set();
+  assignments.forEach(a => a.ids.forEach(id => allAssignedIds.add(id)));
+
+  // Candidates: scored students not currently assigned (or with < 2 uses)
+  const usage = {};
+  assignments.forEach(a => a.ids.forEach(id => { usage[id] = (usage[id] || 0) + 1; }));
+
+  const candidates = scoredStudents.filter(s => {
+    if (s.id === currentId) return false;
+    if (assignments[qi].ids.includes(s.id)) return false;  // already in this Q
+    const u = (usage[s.id] || 0);
+    // If this student is already used, they'd get one more (minus the swapped-out student's freed slot)
+    if (allAssignedIds.has(s.id) && u >= 2) return false;
+    return true;
+  });
+
+  const dd = document.createElement('div');
+  dd.className = 'swap-dropdown';
+  dd.innerHTML = candidates.slice(0, 10).map(s =>
+    `<div class="swap-option" data-id="${s.id}" data-alias="${s.alias}">
+      ${s.alias}
+      <span class="swap-stat">${s.mic_total}次 · ${s.daysSinceLastMic}天前</span>
+    </div>`
+  ).join('') || '<div class="swap-option" style="color:#999;cursor:default">无可替换学员</div>';
+
+  dd.querySelectorAll('.swap-option[data-id]').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const newId = opt.dataset.id;
+      const newAlias = opt.dataset.alias;
+      assignments[qi].ids[pi] = newId;
+      assignments[qi].names[pi] = newAlias;
+      closeAllDropdowns();
+      renderResult();
+      // Also re-render notification if visible
+      if ($notifyText.style.display !== 'none') generateNotification();
+    });
+  });
+
+  anchor.style.position = 'relative';
+  anchor.appendChild(dd);
+}
+
+// ── Notification generation ────────────────────────────────────────────
+const CN_NUMS = ['零','一','二','三','四','五','六','七','八','九','十'];
+function toChinese(n) {
+  if (n <= 10) return CN_NUMS[n];
+  if (n < 20) return '十' + CN_NUMS[n - 10];
+  return String(n);
+}
+
+function formatMeetingId(input) {
+  const digits = input.replace(/\D/g, '');
+  if (digits.length === 9) {
+    return digits.slice(0,3) + '-' + digits.slice(3,6) + '-' + digits.slice(6,9);
+  }
+  if (digits.length === 10) {
+    return digits.slice(0,3) + '-' + digits.slice(3,6) + '-' + digits.slice(6,10);
+  }
+  return input.trim();
+}
+
+const CN_ORDINALS = ['第一','第二','第三','第四','第五','第六','第七','第八','第九','第十'];
+
+document.getElementById('btn-notify').addEventListener('click', generateNotification);
+
+function generateNotification() {
+  const mid = $meetingId.value.trim();
+  if (!mid) { alert('请输入腾讯会议号'); return; }
+  if (!assignments) return;
+
+  const meetingFormatted = formatMeetingId(mid);
+  const qType = $qType.value;
+  const qCount = assignments.length;
+
+  let typeLine;
+  if (qType === '材料结构化') {
+    typeLine = '提前五分钟发布题目';
+  } else {
+    typeLine = '采用即兴作答，请同学们做好准备～';
+  }
+
+  let lines = [];
+  lines.push(`#腾讯会议：${meetingFormatted}`);
+  lines.push('');
+  lines.push(`今日共有${toChinese(qCount)}道题，${typeLine}`);
+  lines.push('⏰上麦顺序');
+
+  assignments.forEach((a, i) => {
+    lines.push(`${CN_ORDINALS[i]}题：${a.names.join('、')}`);
+  });
+
+  lines.push('');
+  lines.push('请以上同学先行确认其网络环境、麦克风设备正常，【进入会议室请修改昵称为化名】');
+  lines.push('所有同学都需在课后进行练习，按照群公告文档完成复盘，完成课下练习！！！');
+
+  const text = lines.join('\n');
+  $notifyText.textContent = text;
+  $notifyText.style.display = 'block';
+  $btnCopy.style.display = 'inline-flex';
+}
+
+// ── Copy ────────────────────────────────────────────────────────────────
+$btnCopy.addEventListener('click', async () => {
+  const text = $notifyText.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  $toast.classList.add('show');
+  setTimeout(() => $toast.classList.remove('show'), 1500);
+});
+
+// ── Init ────────────────────────────────────────────────────────────────
+updateQuestionPositions();
+loadData();
+</script>
+</body>
+</html>

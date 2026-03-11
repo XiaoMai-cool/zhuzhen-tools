@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>助教工具箱 · 筑真学塾</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "SF Pro Display", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #FAFAF8;
+  color: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header {
+  width: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #660874 100%);
+  color: #fff;
+  text-align: center;
+  padding: 2.5rem 1rem 2rem;
+}
+header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: 0.05em; }
+header p { font-size: 0.9rem; opacity: 0.85; margin-top: 0.4rem; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+  max-width: 720px;
+  width: 100%;
+  padding: 2rem 1rem;
+}
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-left: 4px solid #660874;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(102,8,116,0.15); }
+.card .icon { font-size: 2rem; margin-bottom: 0.6rem; }
+.card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
+.card p { font-size: 0.85rem; color: #666; line-height: 1.5; }
+.card .badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  margin-top: 0.6rem;
+  font-weight: 500;
+}
+.badge-ready { background: #e8f5e9; color: #2e7d32; }
+.badge-soon { background: #fff3e0; color: #e65100; }
+.card-disabled { opacity: 0.55; pointer-events: none; border-left-color: #bbb; }
+footer {
+  margin-top: auto;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #999;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>筑真学塾 · 助教工具箱</h1>
+  <p>直播助教日常工具，打开即用</p>
+</header>
+
+<div class="grid">
+  <a class="card" href="guide.html">
+    <div class="icon">📋</div>
+    <h2>面试助教每日引导</h2>
+    <p>课前 / 课堂 / 课后三阶段步骤引导，做完一步打一勾，进度自动保存。</p>
+    <span class="badge badge-ready">可用</span>
+  </a>
+
+  <a class="card" href="speak.html">
+    <div class="icon">🎯</div>
+    <h2>推荐上麦工具</h2>
+    <p>导入学员数据，自动排序推荐上麦名单，一键生成群通知。</p>
+    <span class="badge badge-ready">可用</span>
+  </a>
+
+  <a class="card" href="https://zhuzhen-typeset.pages.dev/" target="_blank">
+    <div class="icon">📄</div>
+    <h2>申论试卷排版</h2>
+    <p>上传试卷内容，自动排版生成 DOCX + PDF（编辑版、水印版、横版教学版）。</p>
+    <span class="badge badge-ready">可用</span>
+  </a>
+
+  <div class="card card-disabled">
+    <div class="icon">📊</div>
+    <h2>出勤录入工具</h2>
+    <p>拖入腾讯会议 Excel，自动匹配学员、生成出勤报告。</p>
+    <span class="badge badge-soon">开发中</span>
+  </div>
+
+  <div class="card card-disabled">
+    <div class="icon">📝</div>
+    <h2>上麦记录表</h2>
+    <p>选择题目和学员，生成格式化的上麦记录文本。</p>
+    <span class="badge badge-soon">开发中</span>
+  </div>
+</div>
+
+<footer>筑真学塾</footer>
+
+</body>
+</html>

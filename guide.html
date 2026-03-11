@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>助教每日引导 · 筑真学塾</title>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: "SF Pro Display", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #FAFAF8;
+  color: #1a1a1a;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Brand Colors ── */
+:root {
+  --purple: #660874;
+  --bright-purple: #C88FD4;
+  --yellow: #F2CC84;
+  --light-purple: #F0E4F3;
+  --dark-purple: #2E0738;
+  --card-bg: #ffffff;
+  --done-bg: #f9f7fb;
+  --done-text: #a89bb5;
+  --radius: 10px;
+  --shadow: 0 2px 8px rgba(102,8,116,0.08);
+}
+
+/* ── Layout ── */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #660874 100%);
+  color: #fff;
+  padding: 24px 16px 20px;
+  text-align: center;
+}
+.header h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.header .date {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-bottom: 14px;
+}
+
+/* ── Course Switcher ── */
+.course-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.course-btn {
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.7);
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.course-btn:hover { background: rgba(255,255,255,0.2); }
+.course-btn.active {
+  background: rgba(255,255,255,0.95);
+  color: var(--purple);
+  border-color: rgba(255,255,255,0.95);
+}
+
+.progress-wrap {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--yellow);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.progress-text {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+.header-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.header-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.header-btn:hover { background: rgba(255,255,255,0.25); }
+.header-btn.reset { border-color: rgba(255,200,200,0.5); }
+
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  background: var(--card-bg);
+  border-bottom: 2px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  max-width: 752px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.tab {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  color: #888;
+  user-select: none;
+}
+.tab:hover { color: var(--purple); }
+.tab.active {
+  color: var(--purple);
+  border-bottom-color: var(--purple);
+}
+.tab .count {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+/* ── Handover Notice ── */
+.handover-notice {
+  background: var(--card-bg);
+  color: #1a1a1a;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  border-left: 4px solid var(--yellow);
+  box-shadow: var(--shadow);
+}
+
+/* ── Steps ── */
+.phase { display: none; padding-top: 12px; }
+.phase.active { display: block; }
+
+.step-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+  border-left: 4px solid var(--purple);
+  overflow: hidden;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+.step-card.done {
+  border-left-color: #ccc;
+  opacity: 0.55;
+}
+.step-card.done .step-title { text-decoration: line-through; color: var(--done-text); }
+
+.step-header {
+  display: flex;
+  align-items: flex-start;
+  padding: 14px 16px;
+  cursor: pointer;
+  gap: 12px;
+  user-select: none;
+}
+.step-checkbox {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--purple);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.step-card.done .step-checkbox {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+.step-checkbox svg {
+  width: 14px; height: 14px;
+  stroke: #fff;
+  stroke-width: 3;
+  fill: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.step-card.done .step-checkbox svg { opacity: 1; }
+
+.step-info { flex: 1; min-width: 0; }
+.step-num {
+  font-size: 0.7rem;
+  color: var(--purple);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.step-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 2px 0 4px;
+  transition: color 0.3s;
+}
+.step-summary {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.5;
+}
+.step-badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.badge-time {
+  background: var(--yellow);
+  color: var(--dark-purple);
+}
+.badge-coord {
+  background: #FFE0E0;
+  color: #8B3B3B;
+}
+
+.step-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--purple);
+  cursor: pointer;
+  padding: 0 16px 12px;
+  font-weight: 500;
+  user-select: none;
+}
+.step-toggle .arrow {
+  display: inline-block;
+  transition: transform 0.2s;
+  font-size: 0.7rem;
+}
+.step-toggle.open .arrow { transform: rotate(90deg); }
+
+.step-details {
+  display: none;
+  background: var(--light-purple);
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  border-top: 1px solid #e5e5e0;
+}
+.step-details.open { display: block; }
+.step-details ol, .step-details ul {
+  padding-left: 1.2em;
+  margin: 6px 0;
+}
+.step-details li { margin-bottom: 4px; }
+.step-details .tip {
+  background: rgba(102,8,116,0.08);
+  border-left: 3px solid var(--purple);
+  padding: 8px 12px;
+  margin-top: 8px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.82rem;
+}
+.step-details .tip::before { content: '💡 '; }
+.step-details code {
+  background: rgba(102,8,116,0.1);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+}
+.step-details .example-block {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #e5e5e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 8px 0;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+.step-details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 0.82rem;
+}
+.step-details th, .step-details td {
+  border: 1px solid #e5e5e0;
+  padding: 6px 10px;
+  text-align: left;
+}
+.step-details th {
+  background: rgba(102,8,116,0.08);
+  font-weight: 600;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(46,7,56,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: var(--radius);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(46,7,56,0.25);
+}
+.modal-header {
+  background: var(--purple);
+  color: #fff;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.modal-header h2 { font-size: 1.05rem; }
+.modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.modal-body { padding: 20px; }
+.modal-body h3 {
+  font-size: 0.95rem;
+  color: var(--purple);
+  margin: 16px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #eee;
+}
+.modal-body h3:first-child { margin-top: 0; }
+
+.emergency-item {
+  margin-bottom: 14px;
+  padding: 12px;
+  background: #fafafa;
+  border-radius: 8px;
+  border-left: 3px solid var(--yellow);
+}
+.emergency-item .situation {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: var(--dark-purple);
+}
+.emergency-item .solution {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 6px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.file-naming-table { width: 100%; }
+.file-naming-table th, .file-naming-table td {
+  border: 1px solid #e5e5e0;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+.file-naming-table th {
+  background: var(--light-purple);
+  font-weight: 600;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+.footer .brand {
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .header { padding: 18px 12px 16px; }
+  .header h1 { font-size: 1.1rem; }
+  .tab { font-size: 0.82rem; padding: 10px 4px; }
+  .step-header { padding: 12px; gap: 10px; }
+  .step-title { font-size: 0.95rem; }
+  .step-details { padding: 12px; }
+  .container { padding: 0 8px 60px; }
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.phase.active .step-card {
+  animation: fadeIn 0.3s ease forwards;
+}
+.phase.active .step-card:nth-child(2) { animation-delay: 0.03s; }
+.phase.active .step-card:nth-child(3) { animation-delay: 0.06s; }
+.phase.active .step-card:nth-child(4) { animation-delay: 0.09s; }
+.phase.active .step-card:nth-child(5) { animation-delay: 0.12s; }
+.phase.active .step-card:nth-child(6) { animation-delay: 0.15s; }
+.phase.active .step-card:nth-child(7) { animation-delay: 0.18s; }
+.phase.active .step-card:nth-child(8) { animation-delay: 0.21s; }
+.phase.active .step-card:nth-child(9) { animation-delay: 0.24s; }
+.phase.active .step-card:nth-child(10) { animation-delay: 0.27s; }
+.phase.active .step-card:nth-child(11) { animation-delay: 0.30s; }
+
+/* ── Confirm Dialog ── */
+.confirm-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(46,7,56,0.5);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.confirm-overlay.open { display: flex; }
+.confirm-box {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(46,7,56,0.25);
+}
+.confirm-box p {
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.confirm-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.confirm-btns button {
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+}
+.btn-cancel {
+  background: #eee;
+  color: #666;
+}
+.btn-confirm {
+  background: var(--purple);
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header" id="header">
+  <h1 id="pageTitle">助教 · 每日引导</h1>
+  <div class="date" id="dateDisplay"></div>
+  <div class="course-switcher" id="courseSwitcher"></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 0 步已完成</div>
+  <div class="header-actions">
+    <button class="header-btn" onclick="openModal('emergency')">🚨 异常处理</button>
+    <button class="header-btn" onclick="openModal('quickref')">📌 速查</button>
+<button class="header-btn reset" onclick="confirmReset()">↩ 重置今日</button>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs" id="tabs"></div>
+
+<!-- Content -->
+<div class="container" id="content"></div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="brand">筑真学塾</div>
+  <div style="margin-top:4px">v2.0 · 2026-03-11 更新</div>
+  <div style="margin-top:4px;font-size:0.75rem;color:#bbb">负责人：<span id="coordFooter"></span></div>
+</div>
+
+<!-- Emergency Modal -->
+<div class="modal-overlay" id="modal-emergency" onclick="closeModalOverlay(event,'emergency')">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>🚨 异常处理速查</h2>
+      <button class="modal-close" onclick="closeModal('emergency')">&times;</button>
+    </div>
+    <div class="modal-body" id="emergencyBody"></div>
+  </div>
+</div>
+
+<!-- Quick Reference Modal -->
+<div class="modal-overlay" id="modal-quickref" onclick="closeModalOverlay(event,'quickref')">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>📌 速查手册</h2>
+      <button class="modal-close" onclick="closeModal('quickref')">&times;</button>
+    </div>
+    <div class="modal-body" id="quickrefBody"></div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <p>确定要清除今天的所有进度吗？</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">取消</button>
+      <button class="btn-confirm" onclick="doReset()">确认重置</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   负责人配置 — 所有「{manager}」会被替换为此名称
+   ══════════════════════════════════════════════════════════════ */
+const COORD_KEY = 'zhuzhen-manager';
+// URL 参数 ?coord=名字 可更新负责人，设置后自动清除参数
+(function() {
+  const p = new URLSearchParams(location.search).get('coord');
+  if (p && p.trim()) {
+    localStorage.setItem(COORD_KEY, p.trim());
+    history.replaceState(null, '', location.pathname);
+  }
+})();
+function getCoordinator() {
+  return localStorage.getItem(COORD_KEY) || '小麦';
+}
+function replaceCoord(str) {
+  return str.replace(/\{manager\}/g, getCoordinator());
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WORKFLOW_DATA — 面试 + 申论 双课程数据
+   ══════════════════════════════════════════════════════════════ */
+const WORKFLOW_DATA = {
+  meta: {
+    title: '助教 · 每日引导',
+    brand: '筑真学塾',
+    version: '2.0',
+    lastUpdated: '2026-03-10'
+  },
+
+  annotationColors: [
+    { name: '芥末黄高亮', hex: '#F2CC84', opacity: '50%', fontSize: '—', usage: '高亮重点句段（日常高亮）' },
+    { name: '帝王紫高亮', hex: '#7B3B8B', opacity: '50%', fontSize: '—', usage: '强调关键名词（在黄色高亮上叠加）' },
+    { name: '帝王紫文本', hex: '#7B3B8B', opacity: '100%', fontSize: '8-10pt', usage: '主要批注色（答题思路、框架）' },
+    { name: '深紫檀文本', hex: '#402A54', opacity: '100%', fontSize: '8-10pt', usage: '区分用（补充点评、易错提醒）' }
+  ],
+
+  courses: {
+    /* ────────────────────────────────────────────
+       面 试
+       ──────────────────────────────────────────── */
+    interview: {
+      name: '面试',
+      icon: '🎤',
+      phases: [
+        {
+          id: 'before',
+          name: '课前',
+          icon: '📋',
+          steps: [
+            {
+              id: 'iv-b1',
+              title: '确认试课学生',
+              timeLabel: '提前一天',
+              needCoord: false,
+              summary: '在教研群确认是否有试课学生及学生情况',
+              details: [
+                '在【教研群】确认是否有试课学生',
+                '<b>无试课学生</b> → 仅处理正式班',
+                '<b>有试课学生</b> → 在试课群沟通：',
+                '· 通知上课时间、腾讯会议形式，提醒留出时间',
+                '· 询问是否上麦 + 解释课堂流程（先听其他同学作答和老师点评，再上麦，压力更小）',
+                '· 如愿意上麦：安排在<b>第二或第三轮次</b>，只安排<b>一道题</b>'
+              ],
+              tips: '话术参考：「可以上麦做答，方便的话我来安排。如果课上感觉说不出来，临时取消也可以」'
+            },
+            {
+              id: 'iv-b2',
+              title: '提前一天通知',
+              timeLabel: '提前一天',
+              needCoord: false,
+              summary: '在学生群和试课群发布上课通知',
+              details: [
+                '<b>正式班群</b>：通知学生第二天需要上课',
+                '<b>试课群（如有）</b>：单独通知上课时间和腾讯会议信息'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b3',
+              title: '接收题目',
+              timeLabel: '当天',
+              needCoord: false,
+              summary: '等老师在助教群发题目（微信消息/图片）',
+              details: [
+                '老师会在助教群中发布今天上课的题目',
+                '题目形式可能是微信文字消息或图片',
+                '确认题目来源（年份 + 省市 + 考试类别）',
+                '确认题目完整，每道题题干清晰'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b4',
+              title: '制作课件 PDF',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'Pages 制作课件 → 导出横版教学版 + 水印版 PDF',
+              details: [
+                '<b>① 判断题目结构，选择 Pages 模板：</b>',
+                '<table><tr><th>结构类型</th><th>特征</th><th>使用模板</th></tr><tr><td>材料结构化</td><td>题目正文前有一段「材料」</td><td><code>材料结构化面试模板.pages</code></td></tr><tr><td>结构化（无材料）</td><td>直接以「第一题：」开头</td><td><code>结构化面试模板.pages</code></td></tr></table>',
+                '<b>② 制作课件：</b>',
+                '· 在 <code>面试预科/</code> 下创建当天日期文件夹（格式 <code>YY.M.DD</code>）',
+                '· 将对应模板<b>复制粘贴</b>到文件夹中并重命名',
+                '· 将题目逐题填入，每道题独立一页',
+                '<b>③ 导出文件：</b>',
+                '<table><tr><th>文件</th><th>命名格式</th><th>用途</th><th>制作方式</th></tr><tr><td>Pages 源文件（水印版）</td><td><code>{上课日期}题目.pages</code></td><td>水印版原稿</td><td>Pages 保存</td></tr><tr><td>Pages 源文件（横版教学）</td><td><code>{试卷名称}.pages</code></td><td>横版教学原稿</td><td>Pages 保存</td></tr><tr><td>横版教学版 PDF</td><td><code>{试卷名称}.pdf</code></td><td>课堂 Drawboard 批注用</td><td>Pages → 导出为 PDF</td></tr><tr><td>水印版 PDF</td><td><code>{上课日期}题目.pdf</code></td><td>发给学生，文字不可复制</td><td>PDF 扁平化网页工具</td></tr></table>',
+                '<b>命名说明：</b>',
+                '· <b>试卷名称</b> = 题目原始考试信息，如 <code>2026年2月2日北京市考面试</code>',
+                '· <b>上课日期</b> = 当天实际上课日期，如 <code>2026年2月8日</code>'
+              ],
+              tips: '详细操作参考 Pages 课件制作教程。水印版使用 PDF 扁平化网页工具生成，加上"筑真学塾"水印。'
+            },
+            {
+              id: 'iv-b5',
+              title: '文件归档',
+              timeLabel: null,
+              needCoord: false,
+              summary: '确认所有文件存入 面试预科/{YY.M.DD}/',
+              details: [
+                '<div class="example-block">面试预科/{YY.M.DD}/\n├── {上课日期}题目.pages       ← 水印版原稿\n├── {试卷名称}.pages          ← 横版教学原稿\n├── {试卷名称}.pdf            ← 横版教学版（屏幕共享用）\n└── {上课日期}题目.pdf         ← 水印版（发给学生）</div>'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b6',
+              title: '预定腾讯会议',
+              timeLabel: null,
+              needCoord: false,
+              summary: '预定会议，开启水印、录制和转写',
+              details: [
+                '会议名称：<code>【筑真YYMMDD面试（班级）】</code>',
+                '如 <code>【筑真260208面试（长期班）】</code>',
+                '<b>预定时开启：</b>',
+                '· ✅ 会议水印（文字水印 + 音频水印）',
+                '· ✅ 成员入会时静音',
+                '· ✅ 主持人入会后自动录制',
+                '· ✅ 自动文字转写'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b7',
+              title: '获取上麦名单',
+              timeLabel: null,
+              needCoord: true,
+              summary: '联系{manager}获取推荐名单，截图发老师确认',
+              details: [
+                '将以下信息发给{manager}：',
+                '· 今天的题目内容',
+                '· 需要排除的学员及原因（如：闫成、西西不安排上麦）',
+                '· 如有试课学生需上麦，一并告知',
+                '{manager}生成推荐名单后发给你',
+                '将名单<b>截图发给老师确认</b>',
+                '如需调整，与{manager}沟通修改'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b8',
+              title: '发布群通知',
+              timeLabel: '开课前 ≥ 20分钟',
+              needCoord: false,
+              summary: '根据确认的名单编写通知发到学员群',
+              details: [
+                '根据老师确认的上麦名单，编写群通知发到学员群',
+                '<b>通知格式：</b>',
+                '<div class="example-block">#腾讯会议：786-579-888\n\n今日共有三道题，提前五分钟发布题目\n⏰上麦顺序\n第一题：星河、乔、格林\n第二题：云乐、刘生\n第三题：桑楚、马杰\n\n请以上同学先行确认其网络环境、麦克风设备正常，\n【进入会议室请修改昵称为化名】\n所有同学都需在课后进行练习，按照群公告文档完成复盘，\n完成课下练习！！！</div>',
+                '试课群单独发送腾讯会议链接',
+                '<b>注意：</b>',
+                '· 会议号格式化为 <code>xxx-xxx-xxx</code>',
+                '· 材料结构化 → 写「提前五分钟发布题目」',
+                '· 结构化 → 写「采用即兴作答，请同学们做好准备～」'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b9',
+              title: '课前请假处理',
+              timeLabel: null,
+              needCoord: true,
+              summary: '如有上麦学生请假，联系{manager}安排替补',
+              details: [
+                '如有上麦学生请假，立即告知{manager}',
+                '{manager}推荐替补人选后更新名单',
+                '将更新后的名单发到群里',
+                '如老师在场，与老师确认替补方案'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-b10',
+              title: '课前技术准备',
+              timeLabel: '开课前10分钟',
+              needCoord: false,
+              summary: '设置窗口、打开 PDF、确认设备',
+              details: [
+                '用 Rectangle <code>Ctrl + Option + S</code> 将 Drawboard PDF 窗口设为 960×540（16:9）',
+                '在 Drawboard PDF 中打开<b>横版教学版 PDF</b>',
+                '确认腾讯会议已开启录制和文字转写',
+                '检查电脑音频正常（麦克风、扬声器）',
+                '确认在场学生，未到场的<b>上麦学生</b>和<b>试课学生</b>及时提醒',
+                '准备好计时器（手机/电脑秒表）',
+                '<b>开课前 5 分钟</b>：发水印版题目 PDF 到群'
+              ],
+              tips: '首次使用 Drawboard PDF 需先完成设置（安装 + 颜色预设），参考 PDF 批注与导出规范。共享前确认选择「窗口」模式。'
+            }
+          ]
+        },
+        {
+          id: 'during',
+          name: '课堂',
+          icon: '🎙️',
+          steps: [
+            {
+              id: 'iv-d1',
+              title: '屏幕共享 PDF',
+              timeLabel: null,
+              needCoord: false,
+              summary: '在 Drawboard PDF 中打开横版教学版，共享窗口给学生',
+              details: [
+                '腾讯会议底部「共享屏幕」→ 选择「窗口」→ Drawboard PDF 窗口',
+                '<b>共享时注意：</b>',
+                '· 不要点击其他应用窗口（会导致 PDF 失去焦点）',
+                '· 不要把鼠标移到屏幕最左边缘',
+                '· 不要使用全屏模式（用最大化窗口代替）',
+                '如需打开链接：<code>Command+Tab</code> 切换到微信 → 点链接 → 切换共享到浏览器'
+              ],
+              tips: '使用前务必关闭「台前调度」和「触发角」，否则切换应用时学生会看到黑屏'
+            },
+            {
+              id: 'iv-d2',
+              title: '控制课堂节奏',
+              timeLabel: null,
+              needCoord: false,
+              summary: '按时间分配控制学生答题时间（约30分钟/题）',
+              details: [
+                '<b>每道题循环：</b>',
+                '<table><tr><th>环节</th><th>时长</th><th>助教动作</th></tr><tr><td>学生A作答</td><td>4-5 分钟</td><td>计时，不做批注</td></tr><tr><td>老师点评A</td><td>1-2 分钟</td><td>在老师引导下，高亮标记题目关键词</td></tr><tr><td>老师讲解</td><td>约15 分钟</td><td>全屏展示题目，在 PDF 上记录要点</td></tr><tr><td>学生B作答</td><td>4-5 分钟</td><td>计时，不做批注</td></tr><tr><td>老师点评B</td><td>1-2 分钟</td><td>—</td></tr></table>'
+              ],
+              tips: '学生作答阶段专注计时，不做批注；老师讲解阶段是主要批注时段'
+            },
+            {
+              id: 'iv-d3',
+              title: 'PDF 批注记录',
+              timeLabel: null,
+              needCoord: false,
+              summary: '在 PDF 上用高亮和文字记录老师讲解要点',
+              details: [
+                '<b>批注原则：</b>',
+                '· 简洁优先：记关键词和框架，不需逐字记录',
+                '· 结构清晰：用数字序号（1. 2. 3.）列出要点',
+                '· 颜色一致：同一堂课内保持颜色用法一致',
+                '· 字号适中：建议 8-10pt，确保共享屏幕时学生能看清',
+                '· 不要按 <code>Command + S</code>（会覆盖原始 PDF），课后统一通过 Export 导出批注版'
+              ],
+              tips: '颜色规范详见右上角「速查」按钮中的批注颜色表'
+            },
+            {
+              id: 'iv-d4',
+              title: '处理突发情况',
+              timeLabel: null,
+              needCoord: false,
+              summary: '学生无法上麦等突发情况，灵活调配',
+              details: [
+                '· <b>学生无法上麦</b>：灵活调配其他学生，或由老师现场决定',
+                '· <b>共享黑屏</b>：检查台前调度是否关闭，重新选择共享窗口',
+                '· <b>共享了错误窗口</b>：立即暂停共享或切换到正确窗口',
+                '· <b>学生说看不到画面</b>：检查是否还在共享状态，确认选择的是窗口而非屏幕'
+              ],
+              tips: '更多异常处理参见右上角「异常处理」按钮'
+            }
+          ]
+        },
+        {
+          id: 'after',
+          name: '课后',
+          icon: '📝',
+          steps: [
+            {
+              id: 'iv-a1',
+              title: '导出批注 PDF',
+              timeLabel: '课后立即',
+              needCoord: false,
+              summary: '从 Drawboard 导出带批注版本，保存到课程文件夹',
+              details: [
+                '从 Drawboard PDF 导出带批注的版本',
+                '命名为 <code>{试卷名称}_批注.pdf</code>',
+                '保存到 <code>面试预科/{YY.M.DD}/</code>',
+                '<div class="example-block">面试预科/26.2.8/\n├── 2026年2月8日题目.pages              ← 水印版原稿\n├── 2026年2月2日北京市考面试.pages      ← 横版教学原稿\n├── 2026年2月2日北京市考面试.pdf        ← 横版教学版\n├── 2026年2月8日题目.pdf                ← 水印版\n└── 2026年2月2日北京市考面试_批注.pdf   ← 课后批注版 ✅</div>'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-a2',
+              title: '发送录播链接 + 布置复盘',
+              timeLabel: '课后10分钟内',
+              needCoord: false,
+              summary: '在群内发布录播链接 + 复盘作业要求',
+              details: [
+                '在学员群发布：',
+                '· 今天的会议直播录制链接',
+                '· 今日真题文本',
+                '· 复盘要求：结合老师讲解重新录制回答',
+                '· 设置截止时间（如次日中午 12:00 前）'
+              ],
+              tips: '课后录播 + 作业要求一起发，减少消息条数'
+            },
+            {
+              id: 'iv-a3',
+              title: '下载出勤 Excel 并发给{manager}',
+              timeLabel: '课后20分钟内',
+              needCoord: true,
+              summary: '从腾讯会议后台下载出勤数据，发给{manager}录入',
+              details: [
+                '登录腾讯会议后台',
+                '找到今天的会议记录',
+                '下载参会者出勤数据（Excel 格式）',
+                '将 Excel 文件微信发给{manager}'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-a4',
+              title: '记录上麦情况并发给{manager}',
+              timeLabel: '课后20分钟内',
+              needCoord: true,
+              summary: '记录每题上麦学员和顺位，微信发给{manager}',
+              details: [
+                '按以下格式记录今天的上麦情况，微信发给{manager}：',
+                '<div class="example-block">套题名称：2026年2月2日北京市考面试\n第1题：星河（第一顺位）、乔（第二顺位）\n第2题：云乐（第一顺位）、格林（第二顺位）\n第3题：桑楚（第一顺位）、马杰（第二顺位）</div>'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-a5',
+              title: '学生复盘',
+              timeLabel: '课后',
+              needCoord: false,
+              summary: '学生提交复盘录音到一对一群聊，由老师点评',
+              details: [
+                '学生会将复盘录音发到各自的一对一群聊',
+                '由老师/面试导师进行点评',
+                '助教无需介入批改'
+              ],
+              tips: null
+            }
+          ]
+        },
+        {
+          id: 'handover',
+          name: '临时交接',
+          icon: '🔄',
+          isHandover: true,
+          notice: 'A = 主要负责人（临时有事），B = 接手人。<br><b>B 不需要做</b>：出勤录入、上麦录入、题库录入、文件归档 —— 由 A 事后补录。<br>B 只需确保<b>课堂执行</b>和<b>批注文件回传</b>。',
+          steps: [
+            {
+              id: 'iv-h1',
+              title: '与 A 确认课件 PDF',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 接收文件；A 未完成 → B 自行制作',
+              details: [
+                '<b>A 已完成</b>：A 发送横版教学版 + 水印版 PDF 给 B',
+                '<b>A 未完成</b>：B 自行制作（参照 Pages 课件制作教程）'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h2',
+              title: '与 A 确认上麦名单',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 接收名单；A 未完成 → B 联系{manager}生成',
+              details: [
+                '<b>A 已完成</b>：A 发送已确认的名单给 B',
+                '<b>A 未完成</b>：B 联系{manager}生成名单，发老师确认'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h3',
+              title: '与 A 确认腾讯会议',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 获取会议号；A 未完成 → B 自行预定',
+              details: [
+                '<b>A 已完成</b>：A 告知会议号',
+                '<b>A 未完成</b>：B 自行预定'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h4',
+              title: '与 A 确认试课学生',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 了解情况；A 未完成 → B 在教研群确认',
+              details: [
+                '<b>A 已完成</b>：A 告知是否有试课学生、是否上麦',
+                '<b>A 未完成</b>：B 在教研群确认'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h5',
+              title: '代发群通知',
+              timeLabel: '开课前 ≥ 20分钟',
+              needCoord: false,
+              summary: '上麦名单确认后，发群通知（会议链接 + 上麦顺序）',
+              details: [
+                '上麦名单确认后，编写通知发到学员群',
+                '试课群单独发送腾讯会议链接，告知上麦安排'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h6',
+              title: 'Drawboard 打开 PDF + 设置窗口',
+              timeLabel: '开课前10分钟',
+              needCoord: false,
+              summary: '打开横版教学版 PDF，Rectangle 设置 16:9 窗口',
+              details: [
+                '用 Rectangle <code>Ctrl + Option + S</code> 将 Drawboard PDF 窗口设为 960×540（16:9）',
+                '在 Drawboard PDF 中打开<b>横版教学版 PDF</b>'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h7',
+              title: '发水印版题目 PDF',
+              timeLabel: '开课前5分钟',
+              needCoord: false,
+              summary: '发水印版题目 PDF 到群',
+              details: [
+                '开课前 5 分钟将水印版题目 PDF 发到学员群'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h8',
+              title: '课堂批注 + 计时',
+              timeLabel: null,
+              needCoord: false,
+              summary: '正常执行课堂流程（参照课堂 Tab）',
+              details: [
+                '正常执行课堂批注 + 计时',
+                '流程与日常课堂一致，参照课堂 Tab 中的步骤'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h9',
+              title: '发录播链接 + 布置复盘作业',
+              timeLabel: '课后10分钟内',
+              needCoord: false,
+              summary: '群里发送录播链接 + 复盘要求',
+              details: [
+                '在学员群发送录播链接',
+                '布置复盘作业，设截止时间'
+              ],
+              tips: null
+            },
+            {
+              id: 'iv-h10',
+              title: '导出批注 PDF → 发回 A',
+              timeLabel: '课后立即',
+              needCoord: false,
+              summary: '从 Drawboard 导出批注版，命名后发回 A',
+              details: [
+                '从 Drawboard PDF 导出带批注版本',
+                '命名为 <code>{试卷名称}_批注.pdf</code>',
+                '将文件发回给 A'
+              ],
+              tips: null
+            }
+          ]
+        }
+      ],
+      emergencies: [
+        { phase: '课前', situation: '课前学生请假', solution: '立即告知{manager}，{manager}推荐替补人选并更新名单。将更新后的名单发到群里，如老师在场一并确认。' },
+        { phase: '课前', situation: '老师临时改题目', solution: '需要重新制作 PDF。快速打开 Pages 模板，替换题目内容，重新导出横版教学版和水印版 PDF。如时间紧迫，可先用文字版题目开课，PDF 课中补上。' },
+        { phase: '课前', situation: '老师迟到', solution: '在学员群通知同学稍等，告知预计开始时间。可以让学生先审题思考。' },
+        { phase: '课中', situation: '直播中学生无法上麦', solution: '灵活调配其他在场学生，或由老师现场决定临时选人。保持冷静，不要让课堂中断太久。' },
+        { phase: '课中', situation: '共享屏幕时黑屏', solution: '最常见原因是 macOS 的「台前调度」没关闭。打开系统设置 → 桌面与程序坞 → 关闭台前调度。同时检查「触发角」是否已关闭。' },
+        { phase: '课中', situation: '共享了错误的窗口', solution: '立即点击腾讯会议「暂停共享」或切换到正确窗口。课后检查录播是否录到敏感内容。' },
+        { phase: '课中', situation: '学生说看不清批注文字', solution: '增大字号（建议8-10pt）。确认共享的是窗口而非缩小后的画面。' },
+        { phase: '课中', situation: 'PDF 被批注后原文看不清', solution: '降低高亮透明度；文本批注写在空白区，不要盖住题目。' },
+        { phase: '课中', situation: 'Drawboard 批注丢失', solution: '注意：不要按 Command+S，会覆盖原始横版教学 PDF。Drawboard 有自动保存机制，课后通过 Export 导出批注版即可。如仍担心丢失，可在课间用 Export 先导出一份备份。' },
+        { phase: '课中', situation: '高亮刷歪了', solution: 'Command+Z 撤销，重新刷。' },
+        { phase: '课中', situation: '打字位置不对', solution: '点击文本框拖动调整位置。' },
+        { phase: '课中', situation: '颜色选错了', solution: '选中已批注内容，在属性面板中修改颜色。' }
+      ],
+      fileNaming: {
+        title: '文件命名规范（面试）',
+        description: '每次课程文件夹：<code>面试预科/{YY.M.DD}/</code>',
+        items: [
+          { file: 'Pages 源文件（水印版）', format: '{上课日期}题目.pages', example: '2026年2月8日题目.pages' },
+          { file: 'Pages 源文件（横版教学）', format: '{试卷名称}.pages', example: '2026年2月2日北京市考面试.pages' },
+          { file: '横版教学版 PDF', format: '{试卷名称}.pdf', example: '2026年2月2日北京市考面试.pdf' },
+          { file: '水印版 PDF', format: '{上课日期}题目.pdf', example: '2026年2月8日题目.pdf' },
+          { file: '批注版 PDF', format: '{试卷名称}_批注.pdf', example: '2026年2月2日北京市考面试_批注.pdf' }
+        ]
+      },
+      timeNodes: [
+        { time: '提前一天', action: '确认试课学生 + 发布上课通知' },
+        { time: '当天', action: '收题 → Pages 制作课件 → 导出 PDF → 水印版 → 归档' },
+        { time: '开课前', action: '预定腾讯会议 + 获取上麦名单（联系{manager}）→ 发老师确认' },
+        { time: '开课前20分钟', action: '发群通知（会议链接 + 上麦顺序）' },
+        { time: '开课前10分钟', action: 'Rectangle 设置窗口 + 打开 Drawboard' },
+        { time: '开课前5分钟', action: '发水印版题目 PDF 到群' },
+        { time: '课后立即', action: '从 Drawboard 导出批注 PDF' },
+        { time: '课后10分钟内', action: '发录播链接 + 布置复盘作业' },
+        { time: '课后20分钟内', action: '出勤 Excel + 上麦记录 → 发给{manager}' }
+      ]
+    },
+
+    /* ────────────────────────────────────────────
+       申 论
+       ──────────────────────────────────────────── */
+    essay: {
+      name: '申论',
+      icon: '📝',
+      phases: [
+        {
+          id: 'before',
+          name: '课前',
+          icon: '📋',
+          steps: [
+            {
+              id: 'es-b1',
+              title: '确认试课学员',
+              timeLabel: '提前一天',
+              needCoord: false,
+              summary: '在教研群确认是否有试课学员',
+              details: [
+                '在【教研群】询问是否有试课学员',
+                '<b>无试课学员</b> → 仅处理正式班',
+                '<b>有试课学员</b> → 需单独通知 + 单独收作业（在一对一群聊发送）'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b6',
+              title: '提前一天通知',
+              timeLabel: '提前一天',
+              needCoord: false,
+              summary: '通知做题范围 + 发送水印版 PDF',
+              details: [
+                '<b>正式班群</b>：通知做题范围 + 发送水印版 PDF + 告知需提前做题',
+                '<b>试课群（如有）</b>：一对一群聊单独通知 + 发送水印版 PDF',
+                '<b>通知格式示例：</b>',
+                '<div class="example-block">明天晚上x点有申论课，请大家完成【第n题】，请提前做好题目并将作业截图发到群里\n[附：水印版 PDF]</div>'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b2',
+              title: '接收题目',
+              timeLabel: '当天',
+              needCoord: false,
+              summary: '等老师在助教群发题，确认完整性',
+              details: [
+                '老师在助教群发布题目',
+                '确认题目来源（年份 + 省市 + 考试类别）',
+                '检查：标题、材料、作答要求、分值齐全'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b3',
+              title: '制作试卷 PDF',
+              timeLabel: null,
+              needCoord: false,
+              summary: '使用网页排版工具，自动输出 4 个文件',
+              details: [
+                '使用网页排版工具：<a href="https://zhuzhen-typeset.pages.dev" target="_blank" style="color:var(--purple)">zhuzhen-typeset.pages.dev</a>',
+                '自动输出 4 个文件：',
+                '<table><tr><th>文件</th><th>用途</th><th>何时使用</th></tr><tr><td><code>{简称}_原稿.docx</code></td><td>可编辑源文件</td><td>制作阶段，发现错误时修改</td></tr><tr><td><code>{简称}_编辑版.pdf</code></td><td>无水印，校对用</td><td>制作后校对</td></tr><tr><td><code>{简称}_水印版.pdf</code></td><td>有水印，发给学生做题</td><td>提前一天发群</td></tr><tr><td><code>{简称}_横版教学版.pdf</code></td><td>16:9 横版，课堂共享</td><td>课堂 Drawboard 批注</td></tr></table>',
+                '<b>注意</b>：首次出题需在通知前完成排版，以便提前一天发水印版'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b4',
+              title: '校对检查',
+              timeLabel: null,
+              needCoord: false,
+              summary: '打开编辑版 PDF，逐题核对内容',
+              details: [
+                '打开编辑版 PDF，逐题核对：',
+                '· 试卷标题正确',
+                '· 材料内容完整、无乱码',
+                '· 每道题的分值和字数要求正确',
+                '· 题目编号连续、无遗漏',
+                '发现问题 → 修改原稿 DOCX → 重新生成'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b5',
+              title: '归档文件',
+              timeLabel: null,
+              needCoord: false,
+              summary: '存入申论试卷库目录，创建上课记录',
+              details: [
+                '目录结构：<code>申论试卷库/{国考|省考|市考}/{地区}/{试卷全称}/</code>',
+                '创建 <code>_上课记录.md</code>，每次课后追加一行（日期、会议名、讲了哪些题、录播链接）',
+                '<div class="example-block">申论试卷库/国考/全国/2025年国考地市级申论/\n├── _上课记录.md\n├── 25国考地市_原稿.docx\n├── 25国考地市_编辑版.pdf\n├── 25国考地市_水印版.pdf\n└── 25国考地市_横版教学版.pdf</div>'
+              ],
+              tips: '一套试卷会分多次课讲完，上课记录用于追踪每次课的进度'
+            },
+            {
+              id: 'es-b7',
+              title: '预定腾讯会议',
+              timeLabel: null,
+              needCoord: false,
+              summary: '预定会议，开启水印、录制和转写',
+              details: [
+                '会议名称：<code>【筑真申论YYYYMMDD】</code>',
+                '如 <code>【筑真申论20260308】</code>',
+                '<b>预定时开启：</b>',
+                '· ✅ 会议水印（文字水印 + 音频水印）',
+                '· ✅ 成员入会时静音',
+                '· ✅ 主持人入会后自动录制',
+                '· ✅ 自动文字转写'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b8',
+              title: '课前发布',
+              timeLabel: '开课前 ≥ 20分钟',
+              needCoord: false,
+              summary: '发会议链接 + 提醒交作业',
+              details: [
+                '正式班群 + 试课群：发会议链接 + 提醒交作业',
+                '如果试课同学没提交作业，也要进行提醒',
+                '<b>通知格式示例：</b>',
+                '<div class="example-block">#腾讯会议：XXX-XXX-XXX\n\n还没有做完作业的同学，请尽快完成哦。</div>'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-b9',
+              title: '收集学生作业',
+              timeLabel: '开课前',
+              needCoord: false,
+              summary: '从微信群收集作业截图并整理',
+              details: [
+                '从微信群 / 一对一群聊收集作业截图',
+                '提前在微信中整理好作业图片窗口',
+                '确保课堂切换共享时能快速展示学生作业'
+              ],
+              tips: '建议将所有作业图片整理到一个聊天窗口中查看，减少切换时暴露无关内容'
+            },
+            {
+              id: 'es-b10',
+              title: '课前技术准备',
+              timeLabel: '开课前10分钟',
+              needCoord: false,
+              summary: '设置窗口、打开 PDF、准备作业窗口',
+              details: [
+                '用 Rectangle <code>Ctrl + Option + S</code> 将 Drawboard PDF 窗口设为 960×540（16:9）',
+                '在 Drawboard PDF 中打开<b>横版教学版 PDF</b>',
+                '确认微信作业窗口已准备好',
+                '阅读 Mac 腾讯会议操作指南，了解屏幕共享操作方式'
+              ],
+              tips: '首次使用 Drawboard PDF 需先完成设置（安装 + 颜色预设），参考 PDF 批注与导出规范。'
+            }
+          ]
+        },
+        {
+          id: 'during',
+          name: '课堂',
+          icon: '🎙️',
+          steps: [
+            {
+              id: 'es-d1',
+              title: '共享 PDF + 批注',
+              timeLabel: null,
+              needCoord: false,
+              summary: '共享横版教学版 PDF，在老师讲解时批注要点',
+              details: [
+                '共享 Drawboard PDF 窗口',
+                '老师讲解时在 PDF 上批注要点',
+                '<b>批注原则：</b>',
+                '· 简洁优先：记关键词和框架，不需逐字记录',
+                '· 结构清晰：用数字序号列出要点',
+                '· 字号适中：建议 8-10pt',
+                '· 不要按 <code>Command + S</code>（会覆盖原始 PDF），课后统一通过 Export 导出批注版'
+              ],
+              tips: '颜色规范详见右上角「速查」按钮中的批注颜色表'
+            },
+            {
+              id: 'es-d2',
+              title: '切换窗口展示作业',
+              timeLabel: null,
+              needCoord: false,
+              summary: '老师要看作业时，切换共享到微信窗口',
+              details: [
+                '老师说"看一下同学们的作业"时 →',
+                '使用腾讯会议的「<b>切换共享内容</b>」功能（不是停止共享再重新共享）',
+                '在弹出的窗口列表中选择微信窗口',
+                '老师点评完毕后切回 Drawboard PDF',
+                '<b>隐私提醒</b>：切换前确保微信界面只显示作业图片，关闭或最小化无关聊天窗口'
+              ],
+              tips: '切换过程中画面会短暂中断，属正常现象'
+            },
+            {
+              id: 'es-d3',
+              title: '处理突发情况',
+              timeLabel: null,
+              needCoord: false,
+              summary: '灵活应对突发状况',
+              details: [
+                '· <b>共享黑屏</b>：检查台前调度是否关闭',
+                '· <b>切换共享时画面卡住</b>：停止共享 → 重新共享目标窗口',
+                '· <b>微信窗口显示了隐私内容</b>：立即停止共享，整理好再重新共享',
+                '· <b>学生说看不到画面</b>：检查共享状态，确认窗口模式'
+              ],
+              tips: '更多异常处理参见右上角「异常处理」按钮'
+            }
+          ]
+        },
+        {
+          id: 'after',
+          name: '课后',
+          icon: '📝',
+          steps: [
+            {
+              id: 'es-a1',
+              title: '导出批注 PDF',
+              timeLabel: '课后立即',
+              needCoord: false,
+              summary: 'Drawboard 导出批注版，保存到试卷库',
+              details: [
+                'Drawboard → 导出带批注版本',
+                '命名：<code>{简称}_批注版.pdf</code>',
+                '保存到试卷库同一目录'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-a2',
+              title: '发送录播链接',
+              timeLabel: '课后10分钟内',
+              needCoord: false,
+              summary: '在正式班群 + 试课群发布录播链接',
+              details: [
+                '在正式班群 + 试课群发布腾讯会议录制链接'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-a3',
+              title: '下载出勤 Excel 并发给{manager}',
+              timeLabel: '课后20分钟内',
+              needCoord: true,
+              summary: '从腾讯会议后台下载出勤数据，发给{manager}录入',
+              details: [
+                '登录腾讯会议后台',
+                '找到今天的会议记录',
+                '下载参会者出勤数据（Excel 格式）',
+                '将 Excel 文件微信发给{manager}'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-a4',
+              title: '归档批注 PDF + 更新上课记录',
+              timeLabel: '课后当天',
+              needCoord: false,
+              summary: '批注版存入试卷库，更新 _上课记录.md',
+              details: [
+                '将批注版 PDF 存入试卷库目录',
+                '在 <code>_上课记录.md</code> 中追加一行：',
+                '<table><tr><th>上课日期</th><th>腾讯会议名称</th><th>讲解题目</th><th>讲解内容</th><th>课程录播链接</th></tr><tr><td>2026-03-08</td><td>【筑真申论20260308】</td><td>第1-2题</td><td>概括题 + 对策题</td><td>链接</td></tr></table>',
+                '此时文件夹应有 5+ 个文件（原稿、编辑版、水印版、横版教学版、批注版）'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-a5',
+              title: '制作课程摘要',
+              timeLabel: '课后当天',
+              needCoord: false,
+              summary: '记录时间节点 + 重点段落，交给剪辑人员',
+              details: [
+                '记录课程时间节点和重点段落',
+                '连同视频下载文件交给剪辑人员',
+                '剪辑人员根据摘要剪辑课程视频（缩短 + 加速）'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-a6',
+              title: '安排一对一重交作业（可选）',
+              timeLabel: '课后',
+              needCoord: false,
+              summary: '部分学生需要老师单独批改',
+              details: [
+                '部分学生需要老师单独批改',
+                '在一对一群聊中安排重交作业'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-a7',
+              title: '上传小鹅通（可选）',
+              timeLabel: '剪辑完成后',
+              needCoord: false,
+              summary: '剪辑完成后将成品上传到小鹅通',
+              details: [
+                '剪辑人员交回成品后，上传到小鹅通',
+                '非直播流程，但需完成闭环'
+              ],
+              tips: null
+            }
+          ]
+        },
+        {
+          id: 'handover',
+          name: '临时交接',
+          icon: '🔄',
+          isHandover: true,
+          notice: 'A = 主要负责人（临时有事），B = 接手人。<br><b>B 不需要做</b>：出勤录入、试卷归档、上课记录更新 —— 由 A 事后补录。<br>B 只需确保<b>课堂执行</b>和<b>批注文件回传</b>。',
+          steps: [
+            {
+              id: 'es-h1',
+              title: '与 A 确认试卷 PDF（续课）',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 接收水印版 + 已批注横版教学版；续课则跳过首课步骤',
+              details: [
+                '<b>A 已完成</b>：A 发送水印版 + 已批注的横版教学版 PDF',
+                '<b>如果是续课</b>，不需要重新排版'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h2',
+              title: '与 A 确认试卷 PDF（首课）',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 接收全套文件；A 未完成 → B 自行用网页工具制作',
+              details: [
+                '<b>A 已完成</b>：A 发送排版好的全套文件',
+                '<b>A 未完成</b>：B 自行用 <a href="https://zhuzhen-typeset.pages.dev" target="_blank" style="color:var(--purple)">网页排版工具</a> 制作'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h3',
+              title: '与 A 确认腾讯会议',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 获取会议号；A 未完成 → B 自行预定',
+              details: [
+                '<b>A 已完成</b>：A 告知会议号',
+                '<b>A 未完成</b>：B 自行预定'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h4',
+              title: '与 A 确认试课学生',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 了解情况；A 未完成 → B 在教研群确认',
+              details: [
+                '<b>A 已完成</b>：A 告知是否有试课学生、是否已通知',
+                '<b>A 未完成</b>：B 在教研群确认'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h5',
+              title: '与 A 确认今天讲哪些题',
+              timeLabel: null,
+              needCoord: false,
+              summary: 'A 已完成 → 了解题目范围；A 未完成 → B 查上课记录或群聊',
+              details: [
+                '<b>A 已完成</b>：A 告知题目范围',
+                '<b>A 未完成</b>：B 查看试卷库 <code>_上课记录.md</code> 或正课学员群聊通知确认'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h6',
+              title: '代发群通知',
+              timeLabel: '开课前 ≥ 20分钟',
+              needCoord: false,
+              summary: '发会议链接 + 提醒交作业',
+              details: [
+                '正式班群 + 试课群：发会议链接 + 提醒交作业',
+                '如有试课学生：单独发通知、收作业'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h7',
+              title: '收集学生作业 + 整理微信窗口',
+              timeLabel: '开课前',
+              needCoord: false,
+              summary: '收集作业截图，整理到微信窗口方便切换',
+              details: [
+                '从微信群 / 一对一群聊收集作业截图',
+                '整理到一个微信窗口中，方便课堂快速切换'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h8',
+              title: 'Drawboard 打开 PDF + 设置窗口',
+              timeLabel: '开课前10分钟',
+              needCoord: false,
+              summary: '打开横版教学版 PDF，Rectangle 设置 16:9 窗口',
+              details: [
+                '用 Rectangle <code>Ctrl + Option + S</code> 将 Drawboard PDF 窗口设为 960×540（16:9）',
+                '在 Drawboard PDF 中打开<b>横版教学版 PDF</b>'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h9',
+              title: '课堂批注 + 窗口切换',
+              timeLabel: null,
+              needCoord: false,
+              summary: '正常执行课堂流程（参照课堂 Tab）',
+              details: [
+                '正常执行课堂批注 + 窗口切换',
+                '流程与日常课堂一致，参照课堂 Tab 中的步骤'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h10',
+              title: '发录播链接',
+              timeLabel: '课后10分钟内',
+              needCoord: false,
+              summary: '群里发送录播链接',
+              details: [
+                '在正式班群 + 试课群发送录播链接'
+              ],
+              tips: null
+            },
+            {
+              id: 'es-h11',
+              title: '导出批注 PDF → 发回 A',
+              timeLabel: '课后立即',
+              needCoord: false,
+              summary: '从 Drawboard 导出批注版，命名后发回 A',
+              details: [
+                '从 Drawboard PDF 导出带批注版本',
+                '命名为 <code>{简称}_批注版.pdf</code>',
+                '将文件发回给 A'
+              ],
+              tips: null
+            }
+          ]
+        }
+      ],
+      emergencies: [
+        { phase: '课前', situation: '老师临时改题目', solution: '重新用网页排版工具制作 PDF，通知学生题目变更。' },
+        { phase: '课前', situation: '老师迟到', solution: '在群里通知同学稍等。' },
+        { phase: '课前', situation: '横版教学版 PDF 未生成', solution: '用编辑版 PDF 临时替代，课后补制横版。' },
+        { phase: '课前', situation: '水印版 PDF 生成失败', solution: '使用 PDF 扁平化网页工具手动对编辑版加水印。' },
+        { phase: '课前', situation: '试课学员临时取消', solution: '确认后正常按正式班流程执行即可。' },
+        { phase: '课前', situation: '学生没交作业', solution: '课上跳过该学生作业展示，课后安排一对一重交。' },
+        { phase: '课中', situation: '共享屏幕时黑屏', solution: '检查台前调度是否关闭（系统设置 → 桌面与程序坞）。检查触发角是否已关闭。' },
+        { phase: '课中', situation: '微信窗口显示了隐私内容', solution: '立即停止共享，整理好微信界面后再重新共享。建议提前将作业截图整理到一个窗口。' },
+        { phase: '课中', situation: '切换共享时画面卡住', solution: '停止共享 → 重新共享目标窗口。' },
+        { phase: '课中', situation: 'Drawboard 批注丢失', solution: '注意：不要按 Command+S，会覆盖原始横版教学 PDF。Drawboard 有自动保存机制，课后通过 Export 导出批注版即可。如仍担心丢失，可在课间用 Export 先导出一份备份。' },
+        { phase: '课中', situation: '学生说看不清批注文字', solution: '增大字号（建议8-10pt）。确认共享的是窗口而非缩小后的画面。' },
+        { phase: '课中', situation: 'PDF 被批注后原文看不清', solution: '降低高亮透明度；文本批注写在空白区，不要盖住题目。' },
+        { phase: '课中', situation: '高亮刷歪了', solution: 'Command+Z 撤销，重新刷。' },
+        { phase: '课中', situation: '打字位置不对', solution: '点击文本框拖动调整位置。' },
+        { phase: '课中', situation: '颜色选错了', solution: '选中已批注内容，在属性面板中修改颜色。' }
+      ],
+      fileNaming: {
+        title: '文件命名规范（申论）',
+        description: '试卷库目录：<code>申论试卷库/{类别}/{地区}/{试卷全称}/</code>',
+        items: [
+          { file: '原稿 DOCX', format: '{简称}_原稿.docx', example: '25国考地市_原稿.docx' },
+          { file: '编辑版 PDF', format: '{简称}_编辑版.pdf', example: '25国考地市_编辑版.pdf' },
+          { file: '水印版 PDF', format: '{简称}_水印版.pdf', example: '25国考地市_水印版.pdf' },
+          { file: '横版教学版 PDF', format: '{简称}_横版教学版.pdf', example: '25国考地市_横版教学版.pdf' },
+          { file: '批注版 PDF', format: '{简称}_批注版.pdf', example: '25国考地市_批注版.pdf' }
+        ]
+      },
+      timeNodes: [
+        { time: '提前一天', action: '确认试课学员 + 通知做题 + 发水印版 PDF' },
+        { time: '当天', action: '收题 → 网页排版 → 校对 → 归档' },
+        { time: '开课前', action: '预定腾讯会议 + 收集学生作业' },
+        { time: '开课前20分钟', action: '发会议链接 + 提醒交作业' },
+        { time: '开课前10分钟', action: 'Rectangle 设置窗口 + 打开 Drawboard + 准备作业窗口' },
+        { time: '课后立即', action: '从 Drawboard 导出批注 PDF' },
+        { time: '课后10分钟内', action: '发录播链接' },
+        { time: '课后20分钟内', action: '出勤 Excel → 发给{manager}' },
+        { time: '课后当天', action: '归档 + 更新上课记录 + 制作课程摘要' }
+      ]
+    }
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════
+   渲染逻辑
+   ══════════════════════════════════════════════════════════════ */
+
+// ── 状态 ──
+let activeCourse = localStorage.getItem('zhuzhen-course-type') || 'interview';
+let activeTab = 'before';
+
+function getCourseData() {
+  return WORKFLOW_DATA.courses[activeCourse];
+}
+
+// ── 日期 & 存储 ──
+function getTodayKey() {
+  const d = new Date();
+  return `zhuzhen-${activeCourse}-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getState() {
+  try {
+    return JSON.parse(localStorage.getItem(getTodayKey())) || {};
+  } catch { return {}; }
+}
+
+function saveState(state) {
+  localStorage.setItem(getTodayKey(), JSON.stringify(state));
+}
+
+function formatDate() {
+  const d = new Date();
+  const weekdays = ['日','一','二','三','四','五','六'];
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 · 星期${weekdays[d.getDay()]}`;
+}
+
+// ── 进度计算 ──
+function calcProgress() {
+  const state = getState();
+  const course = getCourseData();
+  let total = 0, done = 0;
+  course.phases.forEach(phase => {
+    if (phase.isHandover) return;
+    phase.steps.forEach(step => {
+      total++;
+      if (state[step.id]) done++;
+    });
+  });
+  return { total, done };
+}
+
+function updateProgress() {
+  const { total, done } = calcProgress();
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${done} / ${total} 步已完成` + (pct === 100 ? ' 🎉' : '');
+
+  const state = getState();
+  const course = getCourseData();
+  course.phases.forEach(phase => {
+    const phaseTotal = phase.steps.length;
+    const phaseDone = phase.steps.filter(s => state[s.id]).length;
+    const countEl = document.querySelector(`[data-tab="${phase.id}"] .count`);
+    if (countEl) countEl.textContent = `${phaseDone}/${phaseTotal}`;
+  });
+}
+
+// ── 课程切换 ──
+function renderCourseSwitcher() {
+  const el = document.getElementById('courseSwitcher');
+  el.innerHTML = Object.entries(WORKFLOW_DATA.courses).map(([key, c]) =>
+    `<button class="course-btn${key === activeCourse ? ' active' : ''}" data-course="${key}" onclick="switchCourse('${key}')">${c.icon} ${c.name}</button>`
+  ).join('');
+}
+
+function switchCourse(courseId) {
+  activeCourse = courseId;
+  activeTab = 'before';
+  localStorage.setItem('zhuzhen-course-type', courseId);
+  renderAll();
+}
+
+// ── Tab 渲染 ──
+function renderTabs() {
+  const tabsEl = document.getElementById('tabs');
+  const state = getState();
+  const course = getCourseData();
+  tabsEl.innerHTML = course.phases.map(phase => {
+    const phaseDone = phase.steps.filter(s => state[s.id]).length;
+    return `<div class="tab${phase.id === activeTab ? ' active' : ''}" data-tab="${phase.id}" onclick="switchTab('${phase.id}')">
+      ${phase.icon} ${phase.name} <span class="count">${phaseDone}/${phase.steps.length}</span>
+    </div>`;
+  }).join('');
+}
+
+function switchTab(tabId) {
+  activeTab = tabId;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+  document.querySelectorAll('.phase').forEach(p => p.classList.toggle('active', p.id === 'phase-' + tabId));
+}
+
+// ── Steps 渲染 ──
+function renderSteps() {
+  const container = document.getElementById('content');
+  const state = getState();
+  const course = getCourseData();
+
+  container.innerHTML = course.phases.map(phase => {
+    const stepsHtml = phase.steps.map((step, idx) => {
+      const isDone = !!state[step.id];
+      const badges = [];
+      if (step.timeLabel) badges.push(`<span class="badge badge-time">${step.timeLabel}</span>`);
+      if (step.needCoord) badges.push(`<span class="badge badge-coord">需协调</span>`);
+
+      const detailsHtml = step.details.map(d => {
+        if (/^<(table|div|ol|ul)/.test(d)) return d;
+        if (d.startsWith('<')) return `<p style="margin:4px 0">${d}</p>`;
+        if (d.startsWith('·')) return `<p style="margin:2px 0 2px 1.2em;color:#444">${d}</p>`;
+        return `<p style="margin:4px 0">· ${d}</p>`;
+      }).join('');
+
+      const tipHtml = step.tips ? `<div class="tip">${step.tips}</div>` : '';
+
+      return `<div class="step-card${isDone ? ' done' : ''}" data-step="${step.id}">
+        <div class="step-header" onclick="toggleCheck('${step.id}')">
+          <div class="step-checkbox">
+            <svg viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4"/></svg>
+          </div>
+          <div class="step-info">
+            <div class="step-num">Step ${idx + 1}</div>
+            <div class="step-title">${step.title}</div>
+            <div class="step-summary">${step.summary}</div>
+            ${badges.length ? `<div class="step-badges">${badges.join('')}</div>` : ''}
+          </div>
+        </div>
+        <div class="step-toggle" onclick="event.stopPropagation();toggleDetails('${step.id}')">
+          <span class="arrow">▸</span> 详细操作
+        </div>
+        <div class="step-details" id="details-${step.id}">
+          ${detailsHtml}
+          ${tipHtml}
+        </div>
+      </div>`;
+    }).join('');
+
+    const noticeHtml = phase.notice ? `<div class="handover-notice">${phase.notice}</div>` : '';
+    return `<div class="phase${phase.id === activeTab ? ' active' : ''}" id="phase-${phase.id}">${noticeHtml}${stepsHtml}</div>`;
+  }).join('');
+  container.innerHTML = replaceCoord(container.innerHTML);
+}
+
+// ── 事件处理 ──
+function toggleCheck(stepId) {
+  const state = getState();
+  state[stepId] = !state[stepId];
+  saveState(state);
+
+  const card = document.querySelector(`[data-step="${stepId}"]`);
+  if (card) card.classList.toggle('done', state[stepId]);
+
+  updateProgress();
+}
+
+function toggleDetails(stepId) {
+  const details = document.getElementById('details-' + stepId);
+  const toggle = details.previousElementSibling;
+  const isOpen = details.classList.toggle('open');
+  toggle.classList.toggle('open', isOpen);
+}
+
+// ── Modal ──
+function openModal(type) {
+  document.getElementById('modal-' + type).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(type) {
+  document.getElementById('modal-' + type).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOverlay(event, type) {
+  if (event.target === document.getElementById('modal-' + type)) closeModal(type);
+}
+
+function renderEmergency() {
+  const body = document.getElementById('emergencyBody');
+  const course = getCourseData();
+  const phaseLabels = { '课前': '📋 课前', '课中': '🎙️ 课中', '课后': '📝 课后' };
+  const phases = ['课前', '课中', '课后'];
+  let html = '';
+  phases.forEach(phase => {
+    const items = course.emergencies.filter(e => e.phase === phase);
+    if (items.length === 0) return;
+    html += `<h3>${phaseLabels[phase]}</h3>`;
+    html += items.map(e =>
+      `<div class="emergency-item">
+        <div class="situation">❓ ${e.situation}</div>
+        <div class="solution">${e.solution}</div>
+      </div>`
+    ).join('');
+  });
+  body.innerHTML = replaceCoord(html);
+}
+
+function renderQuickRef() {
+  const body = document.getElementById('quickrefBody');
+  const course = getCourseData();
+
+  // File naming
+  const fn = course.fileNaming;
+  let fileHtml = `<h3>📁 ${fn.title}</h3>
+    <p style="margin-bottom:8px;font-size:0.85rem">${fn.description}</p>
+    <table class="file-naming-table">
+      <tr><th>文件</th><th>命名格式</th><th>示例</th></tr>
+      ${fn.items.map(i => `<tr><td>${i.file}</td><td><code>${i.format}</code></td><td style="font-size:0.8rem">${i.example}</td></tr>`).join('')}
+    </table>`;
+
+  // Annotation colors (shared)
+  let colorHtml = `<h3>🎨 批注颜色速查</h3>
+    <table class="file-naming-table">
+      <tr><th>颜色</th><th>色值</th><th>透明度</th><th>字号</th><th>用途</th></tr>
+      ${WORKFLOW_DATA.annotationColors.map(c =>
+        `<tr>
+          <td><span class="color-swatch" style="background:${c.hex};opacity:${parseInt(c.opacity)/100}"></span>${c.name}</td>
+          <td><code>${c.hex}</code></td>
+          <td>${c.opacity}</td>
+          <td>${c.fontSize}</td>
+          <td style="font-size:0.82rem">${c.usage}</td>
+        </tr>`
+      ).join('')}
+    </table>`;
+
+  // Time nodes
+  let timeHtml = `<h3>⏰ 时间节点速查</h3>
+    <table class="file-naming-table">
+      <tr><th>时间</th><th>动作</th></tr>
+      ${course.timeNodes.map(t => `<tr><td style="white-space:nowrap;font-weight:600">${t.time}</td><td style="font-size:0.85rem">${t.action}</td></tr>`).join('')}
+    </table>`;
+
+  body.innerHTML = replaceCoord(fileHtml + colorHtml + timeHtml);
+}
+
+// ── 重置 ──
+function confirmReset() {
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+function closeConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('open');
+}
+
+function doReset() {
+  localStorage.removeItem(getTodayKey());
+  closeConfirm();
+  renderSteps();
+  renderTabs();
+  updateProgress();
+}
+
+// ── 初始化 ──
+function renderAll() {
+  document.getElementById('pageTitle').textContent = getCourseData().name + '助教 · 每日引导';
+  document.getElementById('coordFooter').textContent = getCoordinator();
+  renderCourseSwitcher();
+  renderTabs();
+  renderSteps();
+  renderEmergency();
+  renderQuickRef();
+  updateProgress();
+}
+
+function init() {
+  document.getElementById('dateDisplay').textContent = formatDate();
+  renderAll();
+}
+
+init();
+</script>
+</body>
+</html>
