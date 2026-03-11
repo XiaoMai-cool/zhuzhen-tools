@@ -424,14 +424,14 @@ function showDataStatus() {
     timeText = '刚刚更新';
     cls = 'fresh';
   }
-  $dataBar.innerHTML = `数据 <span class="${cls}">${timeText}</span>（${d.toLocaleDateString('zh-CN')} ${d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'})}）· ${DATA.students.length} 名学员 · ${DATA.classes.length} 个班级`;
+  $dataBar.innerHTML = `数据 <span class="${cls}">${timeText}</span>（${d.toLocaleDateString('zh-CN')} ${d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'})}）`;
 }
 
 function populateClasses() {
   DATA.classes.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c.name;
-    opt.textContent = `${c.name}（${c.student_ids.length} 人）`;
+    opt.textContent = c.name;
     $classSelect.appendChild(opt);
   });
 }
