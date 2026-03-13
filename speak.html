@@ -462,7 +462,7 @@ input[type="number"] { width: 5rem; }
     <select id="class-select"><option value="">请选择班级</option></select>
     <div class="info-row" id="class-info"></div>
     <div class="student-grid" id="student-grid"></div>
-    <div class="student-info-bar" id="student-info-bar"></div>
+    <div class="student-info-bar" id="student-info-bar" style="display:none"></div>
     <div class="add-trial" style="margin-top:0.6rem; display:flex; gap:0.4rem; align-items:center;">
       <input type="text" id="trial-input" placeholder="输入试课学员化名" style="flex:1; min-width:120px;">
       <button class="btn btn-secondary" id="btn-add-trial" type="button">添加</button>
@@ -601,7 +601,7 @@ $classSelect.addEventListener('change', () => {
     $studentGrid.innerHTML = '';
     $classInfo.innerHTML = '';
     $infoBar.innerHTML = '';
-    $infoBar.classList.remove('placeholder');
+    $infoBar.style.display = 'none';
     $cardConfig.classList.add('disabled');
     $cardResult.classList.add('disabled');
     $cardNotify.classList.add('disabled');
@@ -687,6 +687,7 @@ function cancelStudentInfo() {
 }
 
 function resetInfoBarPlaceholder() {
+  $infoBar.style.display = '';
   $infoBar.innerHTML = '悬浮查看学员上麦详情';
   $infoBar.classList.add('placeholder');
 }
