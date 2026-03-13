@@ -146,6 +146,43 @@ input[type="number"] { width: 5rem; }
   font-size: 0.7rem;
   color: var(--gray);
 }
+.student-chip.hovered { background: #d4b8e0; }
+
+/* ── Student info bar ── */
+.student-info-bar {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  background: #f8f4fa;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #555;
+  min-height: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  transition: opacity 0.15s;
+}
+.student-info-bar.placeholder { color: #bbb; }
+.student-info-bar .info-name {
+  font-weight: 600;
+  color: var(--purple);
+}
+.student-info-bar .info-pos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+.student-info-bar .info-pos .pos-n {
+  background: var(--light-purple);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.72rem;
+}
+.student-info-bar .info-date {
+  color: var(--gray);
+  margin-left: auto;
+}
 
 /* ── Question config ── */
 .q-config {
@@ -425,6 +462,7 @@ input[type="number"] { width: 5rem; }
     <select id="class-select"><option value="">请选择班级</option></select>
     <div class="info-row" id="class-info"></div>
     <div class="student-grid" id="student-grid"></div>
+    <div class="student-info-bar" id="student-info-bar"></div>
     <div class="add-trial" style="margin-top:0.6rem; display:flex; gap:0.4rem; align-items:center;">
       <input type="text" id="trial-input" placeholder="输入试课学员化名" style="flex:1; min-width:120px;">
       <button class="btn btn-secondary" id="btn-add-trial" type="button">添加</button>
@@ -562,6 +600,8 @@ $classSelect.addEventListener('change', () => {
     classStudents = [];
     $studentGrid.innerHTML = '';
     $classInfo.innerHTML = '';
+    $infoBar.innerHTML = '';
+    $infoBar.classList.remove('placeholder');
     $cardConfig.classList.add('disabled');
     $cardResult.classList.add('disabled');
     $cardNotify.classList.add('disabled');
@@ -581,6 +621,7 @@ $classSelect.addEventListener('change', () => {
   trialStudents = [];
   renderStudentGrid();
   renderTrialGrid();
+  resetInfoBarPlaceholder();
   $cardConfig.classList.remove('disabled');
   $cardResult.classList.add('disabled');
   $cardNotify.classList.add('disabled');
@@ -605,7 +646,49 @@ function renderStudentGrid() {
       else excludedIds.add(id);
       renderStudentGrid();
     });
+    el.addEventListener('mouseenter', () => showStudentInfo(el.dataset.id));
+    el.addEventListener('mouseleave', cancelStudentInfo);
   });
+}
+
+// ── Student info bar ────────────────────────────────────────────────────
+const $infoBar = document.getElementById('student-info-bar');
+
+let infoHoverTimer = null;
+
+function showStudentInfo(id) {
+  clearTimeout(infoHoverTimer);
+  infoHoverTimer = setTimeout(() => {
+    const s = classStudents.find(st => st.id === id) || trialStudents.find(st => st.id === id);
+    if (!s) return;
+
+    const posKeys = Object.keys(s.mic_positions).sort((a, b) => +a - +b);
+    let posHtml = '';
+    if (posKeys.length > 0) {
+      posHtml = posKeys.map(k =>
+        `<span class="info-pos">第${k}顺位 <span class="pos-n">${s.mic_positions[k]}次</span></span>`
+      ).join(' ');
+    } else {
+      posHtml = '<span style="color:#bbb">暂无上麦记录</span>';
+    }
+
+    let dateHtml = '';
+    if (s.mic_last_date) {
+      dateHtml = `<span class="info-date">最近 ${s.mic_last_date.slice(5)}</span>`;
+    }
+
+    $infoBar.innerHTML = `<span class="info-name">${s.alias}</span>${posHtml}${dateHtml}`;
+    $infoBar.classList.remove('placeholder');
+  }, 500);
+}
+
+function cancelStudentInfo() {
+  clearTimeout(infoHoverTimer);
+}
+
+function resetInfoBarPlaceholder() {
+  $infoBar.innerHTML = '悬浮查看学员上麦详情';
+  $infoBar.classList.add('placeholder');
 }
 
 // ── Trial students ─────────────────────────────────────────────────────
@@ -648,6 +731,8 @@ function renderTrialGrid() {
       renderTrialGrid();
       renderStudentGrid();
     });
+    el.addEventListener('mouseenter', () => showStudentInfo(el.dataset.id));
+    el.addEventListener('mouseleave', cancelStudentInfo);
   });
 }
 
